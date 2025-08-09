@@ -1,27 +1,13 @@
 // SPDX-License-Identifier: MIT
-p        // Deploy DisasterReliefSystem
-        console.log("Deploying DisasterReliefSystem...");
-        DisasterReliefSystem disasterRelief = new DisasterReliefSystem();
-        console.log("DisasterReliefSystem deployed at:", address(disasterRelief));
+pragma solidity ^0.8.19;
 
-        // Mint some initial USDC to deployer for testing
-        console.log("Minting initial USDC for testing...");
-        mockUSDC.faucet(); // 1000 USDC to deployer
-        
-        // Check if deployer has admin role (they should as owner)
-        console.log("Verifying admin role for deployer...");
-        bool hasAdminRole = disasterRelief.admins(deployerAddress);
-        console.log("Deployer has admin role:", hasAdminRole); ^0.8.19;
-
-import {Script, console} from "forge-std/Script.sol";
-import {DisasterReliefSystem} from "../src/DisasterReliefSystem.sol";
-import {MockUSDC} from "../src/MockUSDC.sol";
+import "forge-std/Script.sol";
+import "forge-std/console.sol";
+import "../src/DisasterReliefSystem.sol";
+import "../src/MockUSDC.sol";
 
 contract DeployComplete is Script {
-    DisasterReliefSystem public disasterRelief;
-    MockUSDC public mockUSDC;
-
-    function run() public {
+    function run() external {
         // Use default foundry account or provided private key
         uint256 deployerPrivateKey;
         
@@ -40,22 +26,21 @@ contract DeployComplete is Script {
 
         // Deploy MockUSDC first
         console.log("Deploying MockUSDC...");
-        mockUSDC = new MockUSDC();
+        MockUSDC mockUSDC = new MockUSDC();
         console.log("MockUSDC deployed at:", address(mockUSDC));
 
         // Deploy DisasterReliefSystem
         console.log("Deploying DisasterReliefSystem...");
-        disasterRelief = new DisasterReliefSystem(address(mockUSDC));
+        DisasterReliefSystem disasterRelief = new DisasterReliefSystem();
         console.log("DisasterReliefSystem deployed at:", address(disasterRelief));
 
         // Mint some initial USDC to deployer for testing
         console.log("Minting initial USDC for testing...");
         mockUSDC.faucet(); // 1000 USDC to deployer
         
-        // Give deployer admin role (they should already have it as deployer)
+        // Check if deployer has admin role (they should as owner)
         console.log("Verifying admin role for deployer...");
-        bytes32 adminRole = disasterRelief.DEFAULT_ADMIN_ROLE();
-        bool hasAdminRole = disasterRelief.hasRole(adminRole, deployerAddress);
+        bool hasAdminRole = disasterRelief.admins(deployerAddress);
         console.log("Deployer has admin role:", hasAdminRole);
 
         vm.stopBroadcast();
