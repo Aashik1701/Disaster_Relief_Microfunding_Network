@@ -57,7 +57,11 @@ export default defineConfig({
   ],
   server: {
     port: 3000,
-    host: true
+    host: true,
+    headers: {
+      // Disable CSP in development to allow Vite HMR
+      'Content-Security-Policy': ''
+    }
   },
   build: {
     rollupOptions: {

@@ -35,7 +35,8 @@ const Header = ({ onMenuClick }) => {
       '/admin': 'Admin Dashboard', 
       '/victim': 'Victim Portal',
       '/vendor': 'Vendor Portal',
-      '/transparency': 'Transparency Portal'
+      '/transparency': 'Transparency Portal',
+      '/proof-gallery': 'Proof Gallery'
     }
     return titles[path] || 'Disaster Relief Network'
   }

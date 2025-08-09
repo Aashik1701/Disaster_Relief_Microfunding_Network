@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense, lazy, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Layout from './components/Layout/Layout'
@@ -13,9 +13,17 @@ const VictimPortal = lazy(() => import('./pages/VictimPortal'))
 const VendorPortal = lazy(() => import('./pages/VendorPortal'))
 const TransparencyPortal = lazy(() => import('./pages/TransparencyPortal'))
 const DisasterDetails = lazy(() => import('./pages/DisasterDetails'))
+const ProofGallery = lazy(() => import('./pages/ProofGallery'))
 
 function App() {
-  const { isInitialized } = useWeb3Store()
+  const { isInitialized, initialize } = useWeb3Store()
+
+  useEffect(() => {
+    console.log('App component mounted, calling initialize...')
+    initialize()
+  }, [initialize])
+
+  console.log('App render - isInitialized:', isInitialized)
 
   if (!isInitialized) {
     return (
@@ -63,6 +71,7 @@ function App() {
             <Route path="/vendor" element={<VendorPortal />} />
             <Route path="/transparency" element={<TransparencyPortal />} />
             <Route path="/disaster/:id" element={<DisasterDetails />} />
+            <Route path="/proof-gallery" element={<ProofGallery />} />
             <Route path="*" element={
               <div className="text-center py-16">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">404</h1>

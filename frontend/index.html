@@ -7,6 +7,10 @@
     <meta name="description" content="Blockchain-powered disaster relief micro-funding network built on Avalanche" />
     <meta name="theme-color" content="#e84142" />
     
+    <!-- Development-only CSP - allows unsafe-eval for Vite HMR -->
+    <!-- WARNING: This should be replaced with a strict CSP in production -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline'; object-src 'none'; base-uri 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;" />
+    
     <!-- PWA Meta Tags -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
@@ -23,7 +27,7 @@
     
     <title>Avalanche Disaster Relief Network</title>
   </head>
-  <body class="font-sans bg-gray-50 text-gray-900 antialiased">
+  <body class="font-sans antialiased text-gray-900 bg-gray-50">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

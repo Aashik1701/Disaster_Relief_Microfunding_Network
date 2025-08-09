@@ -12,7 +12,8 @@ import {
   Settings,
   HelpCircle,
   X,
-  Mountain
+  Mountain,
+  Image
 } from 'lucide-react'
 import { useWeb3Store } from '../../store/web3Store'
 
@@ -38,6 +39,12 @@ const Sidebar = ({ onClose }) => {
       href: '/transparency',
       icon: Eye,
       description: 'View all transactions'
+    },
+    {
+      name: 'Proof Gallery',
+      href: '/proof-gallery',
+      icon: Image,
+      description: 'Browse aid evidence'
     }
   ]
 
@@ -101,7 +108,7 @@ const Sidebar = ({ onClose }) => {
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-200 lg:border-b-0">
         <Link to="/" className="flex items-center" onClick={onClose}>
-          <Mountain className="h-8 w-8 text-avalanche-500" />
+          <Mountain className="w-8 h-8 text-avalanche-500" />
           <span className="ml-2 text-lg font-bold text-gray-900">
             Relief Network
           </span>
@@ -111,9 +118,9 @@ const Sidebar = ({ onClose }) => {
         {onClose && (
           <button
             onClick={onClose}
-            className="lg:hidden p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+            className="p-2 text-gray-500 rounded-md lg:hidden hover:text-gray-900 hover:bg-gray-100"
           >
-            <X className="h-6 w-6" />
+            <X className="w-6 h-6" />
           </button>
         )}
       </div>
@@ -162,7 +169,7 @@ const Sidebar = ({ onClose }) => {
       {/* User Role Badge */}
       {isConnected && userRole && (
         <div className="px-4 py-3 border-t border-gray-200">
-          <div className="bg-gray-50 rounded-lg p-3">
+          <div className="p-3 rounded-lg bg-gray-50">
             <div className="flex items-center">
               <div className={`
                 w-3 h-3 rounded-full mr-2
@@ -175,7 +182,7 @@ const Sidebar = ({ onClose }) => {
                 {userRole}
               </span>
             </div>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="mt-1 text-xs text-gray-500">
               {userRole === 'admin' && 'Full system access'}
               {userRole === 'vendor' && 'Process payments'}
               {userRole === 'victim' && 'Manage vouchers'}
@@ -186,7 +193,7 @@ const Sidebar = ({ onClose }) => {
       )}
 
       {/* Bottom Navigation */}
-      <div className="px-4 py-4 border-t border-gray-200 space-y-2">
+      <div className="px-4 py-4 space-y-2 border-t border-gray-200">
         {bottomNavigation.map((item) => {
           const Icon = item.icon
           const isActive = isActiveLink(item.href)
@@ -223,7 +230,7 @@ const Sidebar = ({ onClose }) => {
 
       {/* Version Info */}
       <div className="px-4 py-2 border-t border-gray-200">
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-center text-gray-500">
           v1.0.0 - Avalanche Testnet
         </p>
       </div>
