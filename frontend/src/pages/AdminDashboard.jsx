@@ -24,6 +24,7 @@ import DonationChart from '../components/Charts/DonationChart'
 import ImpactMetrics from '../components/Charts/ImpactMetrics'
 import GeographicDistribution from '../components/Charts/GeographicDistribution'
 import RealTimeMonitor from '../components/DisasterRelief/RealTimeMonitor'
+import ContractEventMonitor from '../components/DisasterRelief/ContractEventMonitor'
 import NewDisasterZone from '../components/Admin/NewDisasterZone'
 import DisasterZoneCard from '../components/Admin/DisasterZoneCard'
 import { useWeb3Store } from '../store/web3Store'
@@ -271,6 +272,10 @@ const AdminDashboard = () => {
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
                   <DonationChart />
                   <GeographicDistribution />
+                </div>
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                  <ImpactMetrics />
+                  <ContractEventMonitor />
                 </div>
               </div>
             )}

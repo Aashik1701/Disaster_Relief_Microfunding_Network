@@ -13,7 +13,25 @@
 
 *Revolutionary blockchain-powered disaster relief network featuring comprehensive role-based access control, professional UI/UX, and enterprise-grade security*
 
-**🌍 [Live Demo](http://localhost:3000) | 📚 [Documentation](#documentation) | 🚀 [Quick Start](#quick-start) | 💼 [Enterprise Features](#enterprise-features)**
+**🌍 [Live Demo](http://localhost:3000) | � [Complete Project Guide](./Project_Guide.md) | 🚀 [Quick Start](#quick-start) | 💼 [Enterprise Features](#enterprise-features)**
+
+---
+
+## 📋 **📌 PINNED: Complete Project Guide**
+
+**👉 [Project_Guide.md](./Project_Guide.md) - Your comprehensive guide to everything!**
+
+This detailed guide covers:
+- **🚀 Complete setup instructions** for all components
+- **🛠️ Development environment** configuration
+- **⛓️ Smart contract deployment** (local, testnet, mainnet)
+- **🔧 API documentation** with all endpoints
+- **🎨 Frontend architecture** and RBAC implementation
+- **📊 Monitoring & analytics** setup
+- **🔐 Security best practices** and troubleshooting
+- **🚀 Production deployment** guides
+
+**Start here for complete project understanding! 👆**
 
 </div>
 
