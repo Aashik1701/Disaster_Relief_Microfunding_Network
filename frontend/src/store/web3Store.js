@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { ethers } from 'ethers'
 import toast from 'react-hot-toast'
+import { DisasterReliefContractService } from '../services/contractService.js'
 
 // Avalanche network configuration
 const AVALANCHE_CONFIG = {
@@ -15,12 +16,6 @@ const AVALANCHE_CONFIG = {
   blockExplorerUrls: ['https://testnet.snowtrace.io/'],
 }
 
-// Contract addresses (to be updated after deployment)
-const CONTRACT_ADDRESSES = {
-  DisasterReliefSystem: import.meta.env.VITE_DISASTER_RELIEF_CONTRACT || '',
-  USDC: import.meta.env.VITE_USDC_CONTRACT || '0x5425890298aed601595a70AB815c96711a31Bc65',
-}
-
 export const useWeb3Store = create((set, get) => ({
   // Connection state
   isConnected: false,
@@ -31,14 +26,19 @@ export const useWeb3Store = create((set, get) => ({
   signer: null,
   chainId: null,
   balance: '0',
+  usdcBalance: '0',
 
-  // Contract instances
-  disasterReliefContract: null,
-  usdcContract: null,
+  // Contract service
+  contractService: null,
 
   // User role and permissions
   userRole: null, // 'admin', 'vendor', 'donor', 'victim'
   permissions: [],
+
+  // Contract data
+  disasterZones: [],
+  vendors: [],
+  vouchers: [],
 
   // Initialize Web3 connection
   initialize: async () => {
@@ -106,11 +106,15 @@ export const useWeb3Store = create((set, get) => ({
       const balance = await provider.getBalance(account)
       const formattedBalance = ethers.formatEther(balance)
 
-      // Initialize contracts
-      const contracts = await get().initializeContracts(signer)
+      // Initialize contract service
+      const contractService = new DisasterReliefContractService(provider, signer)
+      await contractService.initialize()
+
+      // Get USDC balance
+      const usdcBalance = await contractService.getUSDCBalance(account)
 
       // Determine user role
-      const userRole = await get().determineUserRole(account, contracts.disasterReliefContract)
+      const userRole = await get().determineUserRole(account, contractService)
 
       set({
         isConnected: true,
@@ -120,8 +124,29 @@ export const useWeb3Store = create((set, get) => ({
         signer,
         chainId: Number(network.chainId),
         balance: formattedBalance,
+        usdcBalance,
         userRole,
-        ...contracts,
+        contractService,
+      })
+
+      // Setup event listeners
+      contractService.setupEventListeners({
+        onDisasterZoneCreated: (data) => {
+          console.log('Disaster zone created:', data)
+          get().refreshDisasterZones()
+        },
+        onVoucherIssued: (data) => {
+          console.log('Voucher issued:', data)
+          get().refreshVouchers()
+        },
+        onVoucherRedeemed: (data) => {
+          console.log('Voucher redeemed:', data)
+          get().refreshVouchers()
+          get().updateBalance()
+        },
+        onProofOfAidSubmitted: (data) => {
+          console.log('Proof of aid submitted:', data)
+        }
       })
 
       toast.success(`Connected as ${userRole}`)
@@ -157,77 +182,46 @@ export const useWeb3Store = create((set, get) => ({
     }
   },
 
-  // Initialize smart contracts
-  initializeContracts: async (signer) => {
-    try {
-      let disasterReliefContract = null
-      let usdcContract = null
-
-      // Initialize Disaster Relief contract if address is available
-      if (CONTRACT_ADDRESSES.DisasterReliefSystem) {
-        const disasterReliefABI = [
-          // Add contract ABI here when available
-          'function createDisasterZone(string memory _name, int256 _lat, int256 _lng, uint256 _radius) external',
-          'function registerVendor(address _vendorAddress, uint256 _disasterZoneId) external',
-          'function issueVoucher(address _beneficiary, uint256 _amount, uint256 _disasterZoneId, string[] memory _allowedCategories) external',
-          'function redeemVoucher(uint256 _voucherId, uint256 _amount, string memory _category, string memory _ipfsHash) external',
-          'function disasterZones(uint256) external view returns (tuple)',
-          'function vendors(address) external view returns (tuple)',
-          'function vouchers(uint256) external view returns (tuple)',
-          'event DisasterZoneCreated(uint256 indexed zoneId, string name)',
-          'event VoucherIssued(address indexed beneficiary, uint256 amount, uint256 voucherId)',
-          'event VoucherRedeemed(address indexed vendor, uint256 indexed voucherId, uint256 amount)',
-        ]
-        
-        disasterReliefContract = new ethers.Contract(
-          CONTRACT_ADDRESSES.DisasterReliefSystem,
-          disasterReliefABI,
-          signer
-        )
-      }
-
-      // Initialize USDC contract
-      if (CONTRACT_ADDRESSES.USDC) {
-        const usdcABI = [
-          'function balanceOf(address owner) external view returns (uint256)',
-          'function transfer(address to, uint256 amount) external returns (bool)',
-          'function transferFrom(address from, address to, uint256 amount) external returns (bool)',
-          'function approve(address spender, uint256 amount) external returns (bool)',
-          'function allowance(address owner, address spender) external view returns (uint256)',
-          'function decimals() external view returns (uint8)',
-        ]
-        
-        usdcContract = new ethers.Contract(
-          CONTRACT_ADDRESSES.USDC,
-          usdcABI,
-          signer
-        )
-      }
-
-      return { disasterReliefContract, usdcContract }
-    } catch (error) {
-      console.error('Contract initialization error:', error)
-      return { disasterReliefContract: null, usdcContract: null }
-    }
-  },
-
   // Determine user role based on contract state
-  determineUserRole: async (account, contract) => {
+  determineUserRole: async (account, contractService) => {
     try {
-      if (!contract) return 'donor' // Default role if contract not available
+      if (!contractService || !contractService.disasterReliefContract) {
+        return 'donor' // Default role if contract not available
+      }
 
       // Check if user has admin role
+      const contract = contractService.disasterReliefContract
       const ADMIN_ROLE = ethers.keccak256(ethers.toUtf8Bytes('ADMIN_ROLE'))
-      const hasAdminRole = await contract.hasRole(ADMIN_ROLE, account)
-      if (hasAdminRole) return 'admin'
+      
+      try {
+        const hasAdminRole = await contract.hasRole(ADMIN_ROLE, account)
+        if (hasAdminRole) return 'admin'
+      } catch (error) {
+        console.log('Admin role check failed, checking other roles...')
+      }
 
-      // Check if user has vendor role
-      const VENDOR_ROLE = ethers.keccak256(ethers.toUtf8Bytes('VENDOR_ROLE'))
-      const hasVendorRole = await contract.hasRole(VENDOR_ROLE, account)
-      if (hasVendorRole) return 'vendor'
+      // Check if user is a registered vendor
+      try {
+        const vendor = await contractService.getVendor(account)
+        if (vendor && vendor.address !== ethers.ZeroAddress) {
+          return 'vendor'
+        }
+      } catch (error) {
+        console.log('Vendor check failed, checking vouchers...')
+      }
 
       // Check if user has active vouchers (victim)
-      // This would require additional contract methods to check voucher ownership
+      try {
+        const vouchers = await contractService.getUserVouchers(account)
+        if (vouchers && vouchers.length > 0) {
+          const activeVouchers = vouchers.filter(v => !v.used && v.expiryTime > new Date())
+          if (activeVouchers.length > 0) {
+            return 'victim'
+          }
+        }
+      } catch (error) {
+        console.log('Voucher check failed, defaulting to donor role')
+      }
 
       return 'donor' // Default role
     } catch (error) {
@@ -238,6 +232,11 @@ export const useWeb3Store = create((set, get) => ({
 
   // Disconnect wallet
   disconnect: () => {
+    const { contractService } = get()
+    if (contractService) {
+      contractService.removeEventListeners()
+    }
+    
     set({
       isConnected: false,
       account: null,
@@ -245,56 +244,133 @@ export const useWeb3Store = create((set, get) => ({
       signer: null,
       chainId: null,
       balance: '0',
+      usdcBalance: '0',
       userRole: null,
       permissions: [],
-      disasterReliefContract: null,
-      usdcContract: null,
+      contractService: null,
+      disasterZones: [],
+      vendors: [],
+      vouchers: [],
     })
     toast.success('Wallet disconnected')
   },
 
   // Update balance
   updateBalance: async () => {
-    const { provider, account } = get()
+    const { provider, account, contractService } = get()
     if (!provider || !account) return
 
     try {
       const balance = await provider.getBalance(account)
       const formattedBalance = ethers.formatEther(balance)
-      set({ balance: formattedBalance })
+      
+      let usdcBalance = '0'
+      if (contractService) {
+        usdcBalance = await contractService.getUSDCBalance(account)
+      }
+      
+      set({ balance: formattedBalance, usdcBalance })
     } catch (error) {
       console.error('Balance update error:', error)
     }
   },
 
-  // Get USDC balance
-  getUSDCBalance: async () => {
-    const { usdcContract, account } = get()
-    if (!usdcContract || !account) return '0'
+  // Data refresh functions
+  refreshDisasterZones: async () => {
+    const { contractService } = get()
+    if (!contractService) return
 
     try {
-      const balance = await usdcContract.balanceOf(account)
-      return ethers.formatUnits(balance, 6) // USDC has 6 decimals
+      // Get all disaster zones (this would need to be implemented based on events or contract methods)
+      // For now, we'll set up the structure
+      set({ disasterZones: [] })
     } catch (error) {
-      console.error('USDC balance error:', error)
-      return '0'
+      console.error('Error refreshing disaster zones:', error)
     }
   },
 
-  // Approve USDC spending
-  approveUSDC: async (spenderAddress, amount) => {
-    const { usdcContract } = get()
-    if (!usdcContract) throw new Error('USDC contract not initialized')
+  refreshVouchers: async () => {
+    const { contractService, account } = get()
+    if (!contractService || !account) return
 
     try {
-      const amountWei = ethers.parseUnits(amount.toString(), 6)
-      const tx = await usdcContract.approve(spenderAddress, amountWei)
-      await tx.wait()
-      return tx.hash
+      const vouchers = await contractService.getUserVouchers(account)
+      set({ vouchers })
     } catch (error) {
-      console.error('USDC approval error:', error)
-      throw error
+      console.error('Error refreshing vouchers:', error)
     }
+  },
+
+  refreshVendors: async (zoneId) => {
+    const { contractService } = get()
+    if (!contractService) return
+
+    try {
+      if (zoneId) {
+        const vendors = await contractService.getZoneVendors(zoneId)
+        set({ vendors })
+      }
+    } catch (error) {
+      console.error('Error refreshing vendors:', error)
+    }
+  },
+
+  // Contract interaction helpers
+  createDisasterZone: async (name, latitude, longitude, radiusKm, initialFundingUSDC) => {
+    const { contractService } = get()
+    if (!contractService) throw new Error('Contract service not available')
+
+    return await contractService.createDisasterZone(name, latitude, longitude, radiusKm, initialFundingUSDC)
+  },
+
+  registerVendor: async (vendorAddress, name, location, zoneId, ipfsKycHash) => {
+    const { contractService } = get()
+    if (!contractService) throw new Error('Contract service not available')
+
+    return await contractService.registerVendor(vendorAddress, name, location, zoneId, ipfsKycHash)
+  },
+
+  verifyVendor: async (vendorAddress, zoneId) => {
+    const { contractService } = get()
+    if (!contractService) throw new Error('Contract service not available')
+
+    return await contractService.verifyVendor(vendorAddress, zoneId)
+  },
+
+  issueVoucher: async (beneficiaryAddress, amountUSDC, zoneId, categories, expiryDays = 30) => {
+    const { contractService } = get()
+    if (!contractService) throw new Error('Contract service not available')
+
+    return await contractService.issueVoucher(beneficiaryAddress, amountUSDC, zoneId, categories, expiryDays)
+  },
+
+  redeemVoucher: async (voucherId, amountUSDC, category, ipfsHash) => {
+    const { contractService } = get()
+    if (!contractService) throw new Error('Contract service not available')
+
+    return await contractService.redeemVoucher(voucherId, amountUSDC, category, ipfsHash)
+  },
+
+  useFaucet: async () => {
+    const { contractService } = get()
+    if (!contractService) throw new Error('Contract service not available')
+
+    const result = await contractService.useFaucet()
+    if (result.success) {
+      await get().updateBalance()
+    }
+    return result
+  },
+
+  transferUSDC: async (to, amountUSDC) => {
+    const { contractService } = get()
+    if (!contractService) throw new Error('Contract service not available')
+
+    const result = await contractService.transferUSDC(to, amountUSDC)
+    if (result.success) {
+      await get().updateBalance()
+    }
+    return result
   },
 }))
 
