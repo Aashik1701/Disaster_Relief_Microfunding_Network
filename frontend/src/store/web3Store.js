@@ -31,9 +31,19 @@ export const useWeb3Store = create((set, get) => ({
   // Contract service
   contractService: null,
 
-  // User role and permissions
-  userRole: null, // 'admin', 'vendor', 'donor', 'victim'
+  // User role and permissions - enhanced for RBAC
+  userRole: null, // 'admin', 'vendor', 'donor', 'victim', 'government', 'oracle', 'treasury'
   permissions: [],
+  roleHierarchy: {
+    admin: 10,
+    government: 8,
+    treasury: 7,
+    oracle: 6,
+    vendor: 5,
+    victim: 4,
+    donor: 3,
+    guest: 1
+  },
 
   // Contract data
   disasterZones: [],
@@ -253,50 +263,150 @@ export const useWeb3Store = create((set, get) => ({
     }
   },
 
-  // Determine user role based on contract state
+  // Determine user role based on contract state and permissions
   determineUserRole: async (account, contractService) => {
     try {
       if (!contractService || !contractService.disasterReliefContract) {
         return 'donor' // Default role if contract not available
       }
 
-      // Check if user has admin role
       const contract = contractService.disasterReliefContract
-      const ADMIN_ROLE = ethers.keccak256(ethers.toUtf8Bytes('ADMIN_ROLE'))
-      
-      try {
-        const hasAdminRole = await contract.hasRole(ADMIN_ROLE, account)
-        if (hasAdminRole) return 'admin'
-      } catch (error) {
-        console.log('Admin role check failed, checking other roles...')
+      const state = get()
+
+      // Define role mappings and permissions
+      const rolePermissions = {
+        admin: [
+          'manage:all',
+          'view:all',
+          'disaster:create',
+          'disaster:update',
+          'disaster:delete',
+          'vendor:approve',
+          'vendor:reject',
+          'user:manage',
+          'analytics:full',
+          'system:configure'
+        ],
+        government: [
+          'disaster:create',
+          'disaster:update',
+          'disaster:verify',
+          'vendor:approve',
+          'analytics:view',
+          'reports:generate'
+        ],
+        treasury: [
+          'funds:manage',
+          'treasury:view',
+          'treasury:allocate',
+          'analytics:financial'
+        ],
+        oracle: [
+          'data:verify',
+          'price:update',
+          'validation:perform'
+        ],
+        vendor: [
+          'voucher:redeem',
+          'inventory:manage',
+          'transaction:process',
+          'profile:update',
+          'analytics:vendor'
+        ],
+        victim: [
+          'voucher:claim',
+          'aid:request',
+          'profile:update',
+          'donation:track'
+        ],
+        donor: [
+          'donation:make',
+          'impact:track',
+          'profile:update',
+          'analytics:donation'
+        ]
       }
 
-      // Check if user is a registered vendor
+      // Check roles in order of hierarchy (highest to lowest)
       try {
+        // Check for admin role
+        const ADMIN_ROLE = ethers.keccak256(ethers.toUtf8Bytes('ADMIN_ROLE'))
+        const hasAdminRole = await contract.hasRole(ADMIN_ROLE, account)
+        if (hasAdminRole) {
+          set({ permissions: rolePermissions.admin })
+          return 'admin'
+        }
+      } catch (error) {
+        console.log('Admin role check failed:', error)
+      }
+
+      try {
+        // Check for government role (if implemented)
+        const GOVERNMENT_ROLE = ethers.keccak256(ethers.toUtf8Bytes('GOVERNMENT_ROLE'))
+        const hasGovRole = await contract.hasRole(GOVERNMENT_ROLE, account)
+        if (hasGovRole) {
+          set({ permissions: rolePermissions.government })
+          return 'government'
+        }
+      } catch (error) {
+        console.log('Government role check failed:', error)
+      }
+
+      try {
+        // Check for treasury role
+        const TREASURY_ROLE = ethers.keccak256(ethers.toUtf8Bytes('TREASURY_MANAGER_ROLE'))
+        const hasTreasuryRole = await contract.hasRole(TREASURY_ROLE, account)
+        if (hasTreasuryRole) {
+          set({ permissions: rolePermissions.treasury })
+          return 'treasury'
+        }
+      } catch (error) {
+        console.log('Treasury role check failed:', error)
+      }
+
+      try {
+        // Check for oracle role
+        const ORACLE_ROLE = ethers.keccak256(ethers.toUtf8Bytes('ORACLE_ROLE'))
+        const hasOracleRole = await contract.hasRole(ORACLE_ROLE, account)
+        if (hasOracleRole) {
+          set({ permissions: rolePermissions.oracle })
+          return 'oracle'
+        }
+      } catch (error) {
+        console.log('Oracle role check failed:', error)
+      }
+
+      try {
+        // Check if user is a registered vendor
         const vendor = await contractService.getVendor(account)
         if (vendor && vendor.address !== ethers.ZeroAddress) {
+          set({ permissions: rolePermissions.vendor })
           return 'vendor'
         }
       } catch (error) {
-        console.log('Vendor check failed, checking vouchers...')
+        console.log('Vendor check failed:', error)
       }
 
-      // Check if user has active vouchers (victim)
       try {
+        // Check if user has active vouchers (victim/beneficiary)
         const vouchers = await contractService.getUserVouchers(account)
         if (vouchers && vouchers.length > 0) {
           const activeVouchers = vouchers.filter(v => !v.used && v.expiryTime > new Date())
           if (activeVouchers.length > 0) {
+            set({ permissions: rolePermissions.victim })
             return 'victim'
           }
         }
       } catch (error) {
-        console.log('Voucher check failed, defaulting to donor role')
+        console.log('Voucher check failed:', error)
       }
 
-      return 'donor' // Default role
+      // Default to donor role with appropriate permissions
+      set({ permissions: rolePermissions.donor })
+      return 'donor'
     } catch (error) {
       console.error('Role determination error:', error)
+      set({ permissions: rolePermissions.donor || [] })
       return 'donor'
     }
   },

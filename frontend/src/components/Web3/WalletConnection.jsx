@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Wallet, AlertCircle, Download } from 'lucide-react'
+import { Wallet, AlertCircle, Download, HelpCircle } from 'lucide-react'
 import { useWeb3Store } from '../../store/web3Store'
 import LoadingSpinner from '../UI/LoadingSpinner'
 import Modal from '../UI/Modal'
+import WalletSetupGuide from './WalletSetupGuide'
 
 const WalletConnection = () => {
   const { isConnecting, connectWallet } = useWeb3Store()
   const [showWalletModal, setShowWalletModal] = useState(false)
+  const [showSetupGuide, setShowSetupGuide] = useState(false)
   const [connectionError, setConnectionError] = useState(null)
 
   const walletOptions = [
@@ -58,12 +60,12 @@ const WalletConnection = () => {
       whileTap={{ scale: 0.98 }}
       onClick={() => setShowWalletModal(true)}
       disabled={isConnecting}
-      className="btn-primary flex items-center space-x-2"
+      className="flex items-center space-x-2 btn-primary"
     >
       {isConnecting ? (
         <LoadingSpinner size="sm" color="white" />
       ) : (
-        <Wallet className="h-4 w-4" />
+        <Wallet className="w-4 h-4" />
       )}
       <span>
         {isConnecting ? 'Connecting...' : 'Connect Wallet'}
@@ -82,13 +84,13 @@ const WalletConnection = () => {
         size="md"
       >
         <div className="space-y-4">
-          <p className="text-gray-600 text-sm mb-6">
+          <p className="mb-6 text-sm text-gray-600">
             Choose how you'd like to connect to the Avalanche Disaster Relief Network
           </p>
 
           {connectionError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-700 text-sm">{connectionError}</p>
+            <div className="p-3 border border-red-200 rounded-lg bg-red-50">
+              <p className="text-sm text-red-700">{connectionError}</p>
             </div>
           )}
 
@@ -110,7 +112,7 @@ const WalletConnection = () => {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg">
                     {wallet.icon ? (
                       <img 
                         src={wallet.icon} 
@@ -138,7 +140,7 @@ const WalletConnection = () => {
                 <div className="flex items-center">
                   {!wallet.isInstalled ? (
                     <div className="flex items-center space-x-2 text-orange-600">
-                      <Download className="h-4 w-4" />
+                      <Download className="w-4 h-4" />
                       <span className="text-sm font-medium">Install</span>
                     </div>
                   ) : isConnecting ? (
@@ -152,12 +154,12 @@ const WalletConnection = () => {
           ))}
 
           {/* Network Info */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="flex items-center space-x-2 mb-2">
-              <AlertCircle className="h-5 w-5 text-blue-500" />
+          <div className="p-4 mt-6 border border-blue-200 rounded-lg bg-blue-50">
+            <div className="flex items-center mb-2 space-x-2">
+              <AlertCircle className="w-5 h-5 text-blue-500" />
               <h4 className="font-medium text-blue-900">Network Information</h4>
             </div>
-            <div className="text-sm text-blue-800 space-y-1">
+            <div className="space-y-1 text-sm text-blue-800">
               <p><strong>Network:</strong> Avalanche Fuji Testnet</p>
               <p><strong>Chain ID:</strong> 43113</p>
               <p><strong>Currency:</strong> AVAX (Test tokens)</p>
@@ -166,20 +168,33 @@ const WalletConnection = () => {
 
           {/* Help Section */}
           <div className="mt-4 text-center">
-            <p className="text-sm text-gray-500">
+            <p className="mb-3 text-sm text-gray-500">
               New to crypto wallets?{' '}
-              <a 
-                href="/help/wallets" 
-                className="text-avalanche-600 hover:text-avalanche-700 font-medium"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button 
+                onClick={() => setShowSetupGuide(true)}
+                className="font-medium underline text-avalanche-600 hover:text-avalanche-700"
               >
-                Learn how to get started
-              </a>
+                Get step-by-step help
+              </button>
             </p>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setShowSetupGuide(true)}
+              className="inline-flex items-center space-x-2 text-sm text-gray-600 hover:text-gray-800"
+            >
+              <HelpCircle className="w-4 h-4" />
+              <span>Setup Guide</span>
+            </motion.button>
           </div>
         </div>
       </Modal>
+      
+      {/* Wallet Setup Guide */}
+      <WalletSetupGuide 
+        isOpen={showSetupGuide}
+        onClose={() => setShowSetupGuide(false)}
+      />
     </>
   )
 }

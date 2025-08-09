@@ -338,8 +338,8 @@ contract DisasterReliefBondsV2 {
      */
     function selfRegisterForRelief(
         bytes32 eventId,
-        string memory location,
-        string memory contactInfo
+        string memory location
+        
     ) external {
         require(disasters[eventId].timestamp != 0, "Disaster not found");
         require(disasters[eventId].governmentApproved, "Disaster not approved");
