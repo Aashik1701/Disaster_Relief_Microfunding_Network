@@ -43,31 +43,48 @@ export const useWeb3Store = create((set, get) => ({
   // Initialize Web3 connection
   initialize: async () => {
     try {
+      console.log('Initializing Web3 store...')
+      
       if (typeof window.ethereum !== 'undefined') {
+        console.log('Ethereum provider detected')
         const provider = new ethers.BrowserProvider(window.ethereum)
         
         // Check if already connected
-        const accounts = await provider.send('eth_accounts', [])
-        if (accounts.length > 0) {
-          await get().connectWallet()
+        try {
+          const accounts = await provider.send('eth_accounts', [])
+          if (accounts.length > 0) {
+            console.log('Found existing connection, attempting to reconnect...')
+            await get().connectWallet()
+          } else {
+            console.log('No existing connection found')
+          }
+        } catch (error) {
+          console.log('Error checking existing accounts:', error)
         }
         
         // Listen for account changes
         window.ethereum.on('accountsChanged', (accounts) => {
+          console.log('Accounts changed:', accounts)
           if (accounts.length === 0) {
+            console.log('All accounts disconnected')
             get().disconnect()
           } else {
+            console.log('Account changed, reconnecting...')
             get().connectWallet()
           }
         })
 
         // Listen for chain changes
         window.ethereum.on('chainChanged', (chainId) => {
+          console.log('Chain changed to:', chainId)
           window.location.reload()
         })
+      } else {
+        console.log('No Ethereum provider found')
       }
       
       set({ isInitialized: true })
+      console.log('Web3 store initialized successfully')
     } catch (error) {
       console.error('Web3 initialization error:', error)
       toast.error('Failed to initialize Web3')
@@ -83,38 +100,87 @@ export const useWeb3Store = create((set, get) => ({
     set({ isConnecting: true })
 
     try {
+      // Check for Web3 provider
       if (typeof window.ethereum === 'undefined') {
         toast.error('Please install MetaMask or another Web3 wallet')
+        set({ isConnecting: false })
         return
       }
 
+      console.log('Creating provider...')
       const provider = new ethers.BrowserProvider(window.ethereum)
       
       // Request account access
+      console.log('Requesting accounts...')
       await provider.send('eth_requestAccounts', [])
       
       const signer = await provider.getSigner()
       const account = await signer.getAddress()
-      const network = await provider.getNetwork()
+      console.log('Connected to account:', account)
       
-      // Check if on correct network
+      const network = await provider.getNetwork()
+      console.log('Current network:', network.chainId.toString(), network.name)
+      
+      // Check if on correct network and switch if needed
       if (network.chainId !== BigInt(AVALANCHE_CONFIG.chainId)) {
-        await get().switchToAvalanche()
+        console.log('Wrong network detected, switching to Avalanche...')
+        try {
+          await get().switchToAvalanche()
+          // Re-get network info after switch
+          const newNetwork = await provider.getNetwork()
+          console.log('Switched to network:', newNetwork.chainId.toString())
+        } catch (switchError) {
+          console.error('Failed to switch network:', switchError)
+          toast.error('Please manually switch to Avalanche Fuji testnet in your wallet')
+          set({ isConnecting: false })
+          return
+        }
       }
 
       // Get balance
       const balance = await provider.getBalance(account)
       const formattedBalance = ethers.formatEther(balance)
 
-      // Initialize contract service
-      const contractService = new DisasterReliefContractService(provider, signer)
-      await contractService.initialize()
+      // Initialize contract service with error handling
+      let contractService = null
+      let usdcBalance = '0'
+      let userRole = 'donor' // Default role
 
-      // Get USDC balance
-      const usdcBalance = await contractService.getUSDCBalance(account)
+      try {
+        console.log('Initializing contract service...')
+        contractService = new DisasterReliefContractService(provider, signer)
+        await contractService.initialize()
+        console.log('Contract service initialized successfully')
 
-      // Determine user role
-      const userRole = await get().determineUserRole(account, contractService)
+        // Get USDC balance
+        usdcBalance = await contractService.getUSDCBalance(account)
+
+        // Determine user role
+        userRole = await get().determineUserRole(account, contractService)
+
+        // Setup event listeners
+        contractService.setupEventListeners({
+          onDisasterZoneCreated: (data) => {
+            console.log('Disaster zone created:', data)
+            get().refreshDisasterZones()
+          },
+          onVoucherIssued: (data) => {
+            console.log('Voucher issued:', data)
+            get().refreshVouchers()
+          },
+          onVoucherRedeemed: (data) => {
+            console.log('Voucher redeemed:', data)
+            get().refreshVouchers()
+            get().updateBalance()
+          },
+          onProofOfAidSubmitted: (data) => {
+            console.log('Proof of aid submitted:', data)
+          }
+        })
+      } catch (contractError) {
+        console.warn('Contract initialization failed, continuing with limited functionality:', contractError)
+        toast.warning('Contract connection failed. Some features may be limited.')
+      }
 
       set({
         isConnected: true,
@@ -129,30 +195,21 @@ export const useWeb3Store = create((set, get) => ({
         contractService,
       })
 
-      // Setup event listeners
-      contractService.setupEventListeners({
-        onDisasterZoneCreated: (data) => {
-          console.log('Disaster zone created:', data)
-          get().refreshDisasterZones()
-        },
-        onVoucherIssued: (data) => {
-          console.log('Voucher issued:', data)
-          get().refreshVouchers()
-        },
-        onVoucherRedeemed: (data) => {
-          console.log('Voucher redeemed:', data)
-          get().refreshVouchers()
-          get().updateBalance()
-        },
-        onProofOfAidSubmitted: (data) => {
-          console.log('Proof of aid submitted:', data)
-        }
-      })
-
       toast.success(`Connected as ${userRole}`)
+      console.log('Wallet connection completed successfully')
     } catch (error) {
       console.error('Wallet connection error:', error)
-      toast.error('Failed to connect wallet')
+      let errorMessage = 'Failed to connect wallet'
+      
+      if (error.code === 4001) {
+        errorMessage = 'Connection rejected by user'
+      } else if (error.code === -32002) {
+        errorMessage = 'Connection request already pending'
+      } else if (error.message.includes('User rejected')) {
+        errorMessage = 'Connection rejected by user'
+      }
+      
+      toast.error(errorMessage)
       set({ isConnecting: false })
     }
   },
@@ -160,24 +217,38 @@ export const useWeb3Store = create((set, get) => ({
   // Switch to Avalanche network
   switchToAvalanche: async () => {
     try {
+      console.log('Attempting to switch to Avalanche Fuji testnet...')
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: `0x${AVALANCHE_CONFIG.chainId.toString(16)}` }],
       })
+      console.log('Successfully switched to Avalanche Fuji')
     } catch (switchError) {
+      console.error('Switch network error:', switchError)
+      
       // If network doesn't exist, add it
       if (switchError.code === 4902) {
+        console.log('Network not found, attempting to add Avalanche Fuji...')
         try {
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
-            params: [AVALANCHE_CONFIG],
+            params: [{
+              chainId: `0x${AVALANCHE_CONFIG.chainId.toString(16)}`,
+              chainName: AVALANCHE_CONFIG.chainName,
+              nativeCurrency: AVALANCHE_CONFIG.nativeCurrency,
+              rpcUrls: AVALANCHE_CONFIG.rpcUrls,
+              blockExplorerUrls: AVALANCHE_CONFIG.blockExplorerUrls,
+            }],
           })
+          console.log('Successfully added Avalanche Fuji network')
         } catch (addError) {
           console.error('Failed to add Avalanche network:', addError)
-          throw addError
+          throw new Error('Failed to add Avalanche network. Please add it manually.')
         }
+      } else if (switchError.code === 4001) {
+        throw new Error('Network switch rejected by user')
       } else {
-        throw switchError
+        throw new Error(`Failed to switch network: ${switchError.message}`)
       }
     }
   },

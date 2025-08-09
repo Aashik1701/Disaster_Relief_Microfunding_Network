@@ -8,13 +8,14 @@ import Modal from '../UI/Modal'
 const WalletConnection = () => {
   const { isConnecting, connectWallet } = useWeb3Store()
   const [showWalletModal, setShowWalletModal] = useState(false)
+  const [connectionError, setConnectionError] = useState(null)
 
   const walletOptions = [
     {
       name: 'MetaMask',
       description: 'Connect using MetaMask browser extension',
       icon: '/metamask-icon.svg',
-      isInstalled: typeof window !== 'undefined' && typeof window.ethereum !== 'undefined',
+      isInstalled: typeof window !== 'undefined' && typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask,
       installUrl: 'https://metamask.io/download/'
     },
     {
@@ -35,15 +36,19 @@ const WalletConnection = () => {
 
   const handleWalletSelect = async (wallet) => {
     try {
+      setConnectionError(null)
+      
       if (!wallet.isInstalled && wallet.installUrl) {
         window.open(wallet.installUrl, '_blank')
         return
       }
 
+      console.log(`Attempting to connect with ${wallet.name}...`)
       await connectWallet()
       setShowWalletModal(false)
     } catch (error) {
       console.error('Wallet connection error:', error)
+      setConnectionError(error.message || 'Failed to connect wallet')
     }
   }
 
@@ -80,6 +85,12 @@ const WalletConnection = () => {
           <p className="text-gray-600 text-sm mb-6">
             Choose how you'd like to connect to the Avalanche Disaster Relief Network
           </p>
+
+          {connectionError && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-700 text-sm">{connectionError}</p>
+            </div>
+          )}
 
           {walletOptions.map((wallet) => (
             <motion.button

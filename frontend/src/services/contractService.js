@@ -20,21 +20,45 @@ export class DisasterReliefContractService {
    */
   async initialize() {
     try {
+      console.log('Initializing contract service with addresses:', CONTRACT_ADDRESSES)
+      
       if (CONTRACT_ADDRESSES.DISASTER_RELIEF_SYSTEM) {
+        console.log('Creating DisasterReliefSystem contract instance...')
         this.disasterReliefContract = new ethers.Contract(
           CONTRACT_ADDRESSES.DISASTER_RELIEF_SYSTEM,
           DISASTER_RELIEF_ABI,
           this.signer
         );
+        
+        // Test contract connection
+        try {
+          const owner = await this.disasterReliefContract.owner()
+          console.log('DisasterReliefSystem contract connected, owner:', owner)
+        } catch (error) {
+          console.warn('DisasterReliefSystem contract test failed:', error.message)
+        }
+      } else {
+        console.warn('DISASTER_RELIEF_SYSTEM address not configured')
       }
 
       const usdcAddress = CONTRACT_ADDRESSES.MOCK_USDC || CONTRACT_ADDRESSES.FUJI_USDC;
       if (usdcAddress) {
+        console.log('Creating USDC contract instance with address:', usdcAddress)
         this.usdcContract = new ethers.Contract(
           usdcAddress,
           MOCK_USDC_ABI,
           this.signer
         );
+        
+        // Test USDC contract connection
+        try {
+          const symbol = await this.usdcContract.symbol()
+          console.log('USDC contract connected, symbol:', symbol)
+        } catch (error) {
+          console.warn('USDC contract test failed:', error.message)
+        }
+      } else {
+        console.warn('USDC contract address not configured')
       }
 
       this.initialized = true;

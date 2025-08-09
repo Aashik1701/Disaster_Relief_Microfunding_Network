@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Layout from './components/Layout/Layout'
 import LoadingSpinner from './components/UI/LoadingSpinner'
+import WalletDebugger from './components/Web3/WalletDebugger'
 import { useWeb3Store } from './store/web3Store'
 
 // Lazy load pages for better performance
@@ -84,6 +85,9 @@ function App() {
           </Routes>
         </Suspense>
       </Layout>
+      
+      {/* Development Debug Tools */}
+      <WalletDebugger />
     </div>
   )
 }
