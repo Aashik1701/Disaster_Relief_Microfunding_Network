@@ -393,10 +393,10 @@ PINATA_API_KEY=your-pinata-api-key
 PINATA_SECRET=your-pinata-secret-key
 IPFS_GATEWAY=https://gateway.pinata.cloud/ipfs/
 
-# External Services
-TWILIO_SID=your-twilio-account-sid
-TWILIO_AUTH_TOKEN=your-twilio-auth-token
-TWILIO_PHONE=+1234567890
+# Twilio Configuration
+TWILIO_ACCOUNT_SID=ACf43d14fc97aa9e5e9b539a416ed6ec24
+TWILIO_AUTH_TOKEN=3e50414b75c4d6d7504ccd499b62a275
+TWILIO_PHONE_NUMBER=+916383877110 # Your Twilio phone number
 
 # Email Configuration
 SMTP_HOST=smtp.gmail.com

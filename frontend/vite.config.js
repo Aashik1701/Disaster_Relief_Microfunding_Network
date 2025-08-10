@@ -56,11 +56,19 @@ export default defineConfig({
     })
   ],
   server: {
-    port: 3000,
+    port: 3001,
     host: true,
     headers: {
       // Disable CSP in development to allow Vite HMR
       'Content-Security-Policy': ''
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '/api')
+      }
     }
   },
   build: {

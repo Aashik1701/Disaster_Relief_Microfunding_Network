@@ -36,6 +36,9 @@ const Login = () => {
     if (isConnected && account && userRole) {
       const dashboardRoutes = {
         admin: '/admin',
+        government: '/government',
+        treasury: '/treasury',
+        oracle: '/oracle',
         vendor: '/vendor',
         victim: '/victim',
         donor: '/donate'
@@ -81,6 +84,9 @@ const Login = () => {
       // Demo users for testing
       const demoUsers = {
         'admin@relief.network': { role: 'admin', name: 'System Administrator' },
+        'gov@relief.network': { role: 'government', name: 'Government Official' },
+        'treasury@relief.network': { role: 'treasury', name: 'Treasury Manager' },
+        'oracle@relief.network': { role: 'oracle', name: 'Data Oracle' },
         'vendor@relief.network': { role: 'vendor', name: 'Relief Vendor' },
         'victim@relief.network': { role: 'victim', name: 'Relief Recipient' },
         'donor@relief.network': { role: 'donor', name: 'Generous Donor' }
@@ -101,6 +107,9 @@ const Login = () => {
       // Navigate based on role
       const dashboardRoutes = {
         admin: '/admin',
+        government: '/government',
+        treasury: '/treasury',
+        oracle: '/oracle',
         vendor: '/vendor',
         victim: '/victim',
         donor: '/donate'
@@ -124,6 +133,9 @@ const Login = () => {
 
   const roleDescriptions = {
     admin: 'Full system access - Manage disaster zones, vendors, and operations',
+    government: 'Government oversight - Disaster verification and vendor approval',
+    treasury: 'Financial management - Fund allocation and budget control',
+    oracle: 'Data management - Data verification and price updates',
     vendor: 'Process payments and manage aid distribution',
     victim: 'Access relief vouchers and aid resources',
     donor: 'Make donations and track impact'
