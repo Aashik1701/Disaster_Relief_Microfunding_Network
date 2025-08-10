@@ -43,7 +43,7 @@ const DonorDashboard = () => {
       beneficiaries: 2500,
       status: 'active',
       urgency: 'high',
-      image: '/disaster-1.jpg',
+      image: 'https://forward.com/wp-content/uploads/2023/02/GettyImages-1246848248.jpeg',
       createdAt: new Date('2024-01-15'),
       categories: ['Medical', 'Food', 'Shelter', 'Water']
     },
@@ -58,7 +58,7 @@ const DonorDashboard = () => {
       beneficiaries: 1800,
       status: 'active',
       urgency: 'medium',
-      image: '/disaster-2.jpg',
+      image: 'https://imagesvs.oneindia.com/img/2023/12/chennai-floods-small-1701933535.jpg',
       createdAt: new Date('2024-01-20'),
       categories: ['Food', 'Shelter', 'Clothing', 'Medical']
     },
@@ -73,7 +73,7 @@ const DonorDashboard = () => {
       beneficiaries: 3200,
       status: 'completed',
       urgency: 'low',
-      image: '/disaster-3.jpg',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS97yLCkYtLMx3pMfG4KAOd6luNbIk-YYQejg&s',
       createdAt: new Date('2024-01-10'),
       categories: ['Shelter', 'Food', 'Medical', 'Transportation']
     }
