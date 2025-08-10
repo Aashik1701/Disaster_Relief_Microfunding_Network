@@ -228,11 +228,11 @@ const GovernmentDashboard = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 mx-auto max-w-7xl">
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Government Portal</h1>
+            <h1 className="mb-2 text-3xl font-bold text-gray-900">Government Portal</h1>
             <p className="text-gray-600">
               Regulatory oversight and disaster management coordination
             </p>
@@ -257,10 +257,10 @@ const GovernmentDashboard = () => {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow p-6">
+      <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-4">
+        <div className="p-6 bg-white rounded-lg shadow">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-blue-100">
+            <div className="p-3 bg-blue-100 rounded-full">
               <AlertTriangle className="w-6 h-6 text-blue-600" />
             </div>
             <div className="ml-4">
@@ -272,9 +272,9 @@ const GovernmentDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="p-6 bg-white rounded-lg shadow">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-green-100">
+            <div className="p-3 bg-green-100 rounded-full">
               <CheckCircle2 className="w-6 h-6 text-green-600" />
             </div>
             <div className="ml-4">
@@ -286,9 +286,9 @@ const GovernmentDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="p-6 bg-white rounded-lg shadow">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-yellow-100">
+            <div className="p-3 bg-yellow-100 rounded-full">
               <FileText className="w-6 h-6 text-yellow-600" />
             </div>
             <div className="ml-4">
@@ -300,9 +300,9 @@ const GovernmentDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="p-6 bg-white rounded-lg shadow">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-purple-100">
+            <div className="p-3 bg-purple-100 rounded-full">
               <BarChart3 className="w-6 h-6 text-purple-600" />
             </div>
             <div className="ml-4">
@@ -316,8 +316,8 @@ const GovernmentDashboard = () => {
       </div>
 
       {/* Tab Navigation */}
-      <div className="border-b border-gray-200 mb-6">
-        <nav className="-mb-px flex space-x-8">
+      <div className="mb-6 border-b border-gray-200">
+        <nav className="flex -mb-px space-x-8">
           {[
             { id: 'overview', label: 'Overview', icon: BarChart3 },
             { id: 'disasters', label: 'Disaster Management', icon: AlertTriangle },
@@ -348,27 +348,27 @@ const GovernmentDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+            className="grid grid-cols-1 gap-8 lg:grid-cols-2"
           >
             {/* Recent Activity */}
             <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+              <h3 className="mb-4 text-lg font-semibold text-gray-900">Recent Activity</h3>
               <div className="space-y-4">
-                <div className="flex items-center space-x-4 p-3 bg-red-50 rounded-lg">
+                <div className="flex items-center p-3 space-x-4 rounded-lg bg-red-50">
                   <AlertTriangle className="w-5 h-5 text-red-500" />
                   <div>
                     <p className="font-medium text-gray-900">Hurricane Florence declared</p>
                     <p className="text-sm text-gray-600">$2.5M budget allocated • 2 hours ago</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4 p-3 bg-green-50 rounded-lg">
+                <div className="flex items-center p-3 space-x-4 rounded-lg bg-green-50">
                   <DollarSign className="w-5 h-5 text-green-500" />
                   <div>
                     <p className="font-medium text-gray-900">Bulk payout processed</p>
                     <p className="text-sm text-gray-600">$45,850 to 12 vendors • 4 hours ago</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4 p-3 bg-blue-50 rounded-lg">
+                <div className="flex items-center p-3 space-x-4 rounded-lg bg-blue-50">
                   <CheckCircle2 className="w-5 h-5 text-blue-500" />
                   <div>
                     <p className="font-medium text-gray-900">New vendor verified</p>
@@ -380,7 +380,7 @@ const GovernmentDashboard = () => {
 
             {/* Critical Alerts */}
             <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Critical Alerts</h3>
+              <h3 className="mb-4 text-lg font-semibold text-gray-900">Critical Alerts</h3>
               <div className="space-y-4">
                 <div className="p-4 border-l-4 border-red-500 bg-red-50">
                   <div className="flex justify-between">
@@ -427,7 +427,7 @@ const GovernmentDashboard = () => {
               
               <div className="space-y-6">
                 {disasters.map(disaster => (
-                  <div key={disaster.id} className="border border-gray-200 rounded-lg p-6">
+                  <div key={disaster.id} className="p-6 border border-gray-200 rounded-lg">
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <div className="flex items-center space-x-2">
@@ -447,7 +447,7 @@ const GovernmentDashboard = () => {
                             {disaster.severity} severity
                           </span>
                         </div>
-                        <p className="text-gray-600 flex items-center">
+                        <p className="flex items-center text-gray-600">
                           <MapPin className="w-4 h-4 mr-1" />
                           {disaster.location} • {disaster.type}
                         </p>
@@ -458,7 +458,7 @@ const GovernmentDashboard = () => {
                       </Button>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                       <div>
                         <p className="text-sm text-gray-600">Affected People</p>
                         <p className="text-lg font-semibold text-gray-900">
@@ -480,9 +480,9 @@ const GovernmentDashboard = () => {
                       <div>
                         <p className="text-sm text-gray-600">Usage %</p>
                         <div className="flex items-center">
-                          <div className="flex-1 bg-gray-200 rounded-full h-2 mr-2">
+                          <div className="flex-1 h-2 mr-2 bg-gray-200 rounded-full">
                             <div 
-                              className="bg-blue-600 h-2 rounded-full" 
+                              className="h-2 bg-blue-600 rounded-full" 
                               style={{ width: `${(disaster.budgetUsed / disaster.budgetAllocated) * 100}%` }}
                             />
                           </div>
@@ -526,10 +526,10 @@ const GovernmentDashboard = () => {
               
               <div className="space-y-4">
                 {pendingPayouts.map(payout => (
-                  <div key={payout.id} className="border border-gray-200 rounded-lg p-4">
+                  <div key={payout.id} className="p-4 border border-gray-200 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-2">
+                        <div className="flex items-center mb-2 space-x-2">
                           <h4 className="font-medium text-gray-900">{payout.id}</h4>
                           <span className={`px-2 py-1 text-xs rounded-full ${
                             payout.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
@@ -546,7 +546,7 @@ const GovernmentDashboard = () => {
                             {payout.priority} priority
                           </span>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                        <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-4">
                           <div>
                             <p className="text-gray-600">Vendor</p>
                             <p className="font-medium">{payout.vendor}</p>
@@ -593,7 +593,7 @@ const GovernmentDashboard = () => {
             exit={{ opacity: 0, y: -20 }}
           >
             <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Vendor Oversight</h3>
+              <h3 className="mb-6 text-lg font-semibold text-gray-900">Vendor Oversight</h3>
               <div className="space-y-4">
                 {vendors.map(vendor => (
                   <div key={vendor.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
@@ -602,10 +602,10 @@ const GovernmentDashboard = () => {
                         <Shield className="w-5 h-5 text-blue-600" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-gray-900 flex items-center">
+                        <h4 className="flex items-center font-medium text-gray-900">
                           {vendor.name}
                           {vendor.verified && (
-                            <CheckCircle2 className="w-4 h-4 text-green-500 ml-2" />
+                            <CheckCircle2 className="w-4 h-4 ml-2 text-green-500" />
                           )}
                         </h4>
                         <p className="text-sm text-gray-600">
@@ -633,9 +633,9 @@ const GovernmentDashboard = () => {
         size="lg"
       >
         <form onSubmit={handleBulkPayout} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Disaster
               </label>
               <select
@@ -652,7 +652,7 @@ const GovernmentDashboard = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Payout Type
               </label>
               <select
@@ -668,7 +668,7 @@ const GovernmentDashboard = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Total Amount ($)
             </label>
             <input
@@ -683,7 +683,7 @@ const GovernmentDashboard = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Description
             </label>
             <textarea
@@ -697,11 +697,11 @@ const GovernmentDashboard = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Upload Recipients List
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-              <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+            <div className="p-6 text-center border-2 border-gray-300 border-dashed rounded-lg">
+              <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
               <p className="text-sm text-gray-600">Upload CSV file with recipient details</p>
               <input type="file" accept=".csv" className="hidden" />
             </div>
@@ -735,9 +735,9 @@ const GovernmentDashboard = () => {
         size="lg"
       >
         <form onSubmit={handleCreateDisaster} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Disaster Name *
               </label>
               <input
@@ -751,7 +751,7 @@ const GovernmentDashboard = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Disaster Type *
               </label>
               <select
@@ -771,7 +771,7 @@ const GovernmentDashboard = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Location *
             </label>
             <input
@@ -784,9 +784,9 @@ const GovernmentDashboard = () => {
             />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Severity Level
               </label>
               <select
@@ -802,7 +802,7 @@ const GovernmentDashboard = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Estimated Affected People
               </label>
               <input
@@ -817,7 +817,7 @@ const GovernmentDashboard = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Budget Allocation ($)
             </label>
             <input
@@ -832,7 +832,7 @@ const GovernmentDashboard = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
               Description
             </label>
             <textarea
@@ -870,194 +870,3 @@ const GovernmentDashboard = () => {
 
 export default GovernmentDashboard;
 
-const GovernmentDashboard = () => {
-  return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Government Portal</h1>
-        <p className="text-gray-600">
-          Regulatory oversight and disaster management coordination
-        </p>
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-blue-100">
-              <AlertTriangle className="w-6 h-6 text-blue-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Active Disasters</p>
-              <p className="text-2xl font-bold text-gray-900">12</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-green-100">
-              <CheckCircle2 className="w-6 h-6 text-green-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Verified Vendors</p>
-              <p className="text-2xl font-bold text-gray-900">148</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-yellow-100">
-              <FileText className="w-6 h-6 text-yellow-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Pending Reviews</p>
-              <p className="text-2xl font-bold text-gray-900">23</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-purple-100">
-              <BarChart3 className="w-6 h-6 text-purple-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Aid Distributed</p>
-              <p className="text-2xl font-bold text-gray-900">$2.4M</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Disaster Management */}
-        <RoleGuard permissions={['disaster:create', 'disaster:update']} fallback={null}>
-          <div className="bg-white rounded-lg shadow">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                <AlertTriangle className="w-5 h-5 mr-2 text-red-500" />
-                Disaster Management
-              </h3>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                <button className="w-full text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium text-gray-900">Create New Disaster Declaration</p>
-                      <p className="text-sm text-gray-500">Declare a new disaster and allocate resources</p>
-                    </div>
-                    <div className="text-blue-500">+</div>
-                  </div>
-                </button>
-                
-                <button className="w-full text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium text-gray-900">Review Disaster Reports</p>
-                      <p className="text-sm text-gray-500">Verify and update disaster information</p>
-                    </div>
-                    <div className="text-yellow-500">!</div>
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
-        </RoleGuard>
-
-        {/* Vendor Approval */}
-        <RoleGuard permissions={['vendor:approve']} fallback={null}>
-          <div className="bg-white rounded-lg shadow">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                <Shield className="w-5 h-5 mr-2 text-green-500" />
-                Vendor Verification
-              </h3>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                <div className="p-4 border border-gray-200 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium text-gray-900">Aid Supply Co.</p>
-                      <p className="text-sm text-gray-500">Emergency food supplier</p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button className="px-3 py-1 text-sm bg-green-100 text-green-700 rounded">
-                        Approve
-                      </button>
-                      <button className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded">
-                        Reject
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-4 border border-gray-200 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium text-gray-900">Medical Relief Inc.</p>
-                      <p className="text-sm text-gray-500">Medical equipment supplier</p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button className="px-3 py-1 text-sm bg-green-100 text-green-700 rounded">
-                        Approve
-                      </button>
-                      <button className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded">
-                        Reject
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </RoleGuard>
-
-        {/* Analytics & Reports */}
-        <RoleGuard permissions={['reports:generate', 'analytics:view']} fallback={null}>
-          <div className="bg-white rounded-lg shadow lg:col-span-2">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                <BarChart3 className="w-5 h-5 mr-2 text-blue-500" />
-                Analytics & Reporting
-              </h3>
-            </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left">
-                  <div className="text-center">
-                    <Eye className="w-8 h-8 mx-auto text-blue-500 mb-2" />
-                    <p className="font-medium text-gray-900">Fund Tracking</p>
-                    <p className="text-sm text-gray-500">Monitor aid distribution</p>
-                  </div>
-                </button>
-                
-                <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left">
-                  <div className="text-center">
-                    <FileText className="w-8 h-8 mx-auto text-green-500 mb-2" />
-                    <p className="font-medium text-gray-900">Impact Reports</p>
-                    <p className="text-sm text-gray-500">Generate impact analysis</p>
-                  </div>
-                </button>
-                
-                <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left">
-                  <div className="text-center">
-                    <Users className="w-8 h-8 mx-auto text-purple-500 mb-2" />
-                    <p className="font-medium text-gray-900">User Activity</p>
-                    <p className="text-sm text-gray-500">Monitor platform usage</p>
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
-        </RoleGuard>
-      </div>
-    </div>
-  );
-};
-
-export default GovernmentDashboard;

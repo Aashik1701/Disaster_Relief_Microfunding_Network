@@ -39,7 +39,7 @@ function App() {
 
   if (!isInitialized) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-avalanche-500 to-avalanche-600">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-avalanche-500 to-avalanche-600">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -52,7 +52,7 @@ function App() {
               alt="Avalanche Logo" 
               className="w-24 h-24 mx-auto mb-4"
             />
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 className="mb-2 text-3xl font-bold text-white">
               Disaster Relief Network
             </h1>
             <p className="text-avalanche-100">
@@ -70,112 +70,142 @@ function App() {
       <div className="min-h-screen bg-gray-50">
         <Suspense 
           fallback={
-            <div className="flex justify-center items-center h-64">
+            <div className="flex items-center justify-center h-64">
               <LoadingSpinner />
             </div>
           }
         >
           <Routes>
-            {/* Public Routes */}
+            {/* Public Routes without Layout */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             
             {/* Protected Routes with Layout */}
-            <Route path="/*" element={
+            {/* Public pages accessible to all users */}
+            <Route path="/" element={
               <Layout>
-                <Routes>
-                  {/* Public pages accessible to all users */}
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/transparency" element={<TransparencyPortal />} />
-                  <Route path="/disaster/:id" element={<DisasterDetails />} />
-                  <Route path="/proof-gallery" element={<ProofGallery />} />
-                  
-                  {/* Role-based Protected Routes */}
-                  
-                  {/* Admin Dashboard - Admin role required */}
-                  <Route 
-                    path="/admin" 
-                    element={
-                      <ProtectedRoute requiredRoles={['admin']}>
-                        <AdminDashboard />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  
-                  {/* Government Dashboard - Government role required */}
-                  <Route 
-                    path="/government" 
-                    element={
-                      <ProtectedRoute requiredRoles={['government']}>
-                        <GovernmentDashboard />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  
-                  {/* Treasury Dashboard - Treasury role required */}
-                  <Route 
-                    path="/treasury" 
-                    element={
-                      <ProtectedRoute requiredRoles={['treasury']}>
-                        <TreasuryDashboard />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  
-                  {/* Oracle Dashboard - Oracle role required */}
-                  <Route 
-                    path="/oracle" 
-                    element={
-                      <ProtectedRoute requiredRoles={['oracle']}>
-                        <OracleDashboard />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  
-                  {/* Vendor Portal - Vendor role required */}
-                  <Route 
-                    path="/vendor" 
-                    element={
-                      <ProtectedRoute requiredRoles={['vendor']}>
-                        <VendorPortal />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  
-                  {/* Victim Portal - Victim role required */}
-                  <Route 
-                    path="/victim" 
-                    element={
-                      <ProtectedRoute requiredRoles={['victim']}>
-                        <VictimPortal />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  
-                  {/* Donor Dashboard - Donor role or authenticated user */}
-                  <Route 
-                    path="/donate" 
-                    element={
-                      <ProtectedRoute requireAuth={true}>
-                        <DonorDashboard />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  
-                  {/* Dashboard redirect based on role */}
-                  <Route path="/dashboard" element={<RoleBasedRouter />} />
-                  
-                  {/* 404 Page */}
-                  <Route path="*" element={
-                    <div className="text-center py-16">
-                      <h1 className="text-4xl font-bold text-gray-900 mb-4">404</h1>
-                      <p className="text-gray-600 mb-8">Page not found</p>
-                      <a href="/" className="btn-primary">
-                        Return Home
-                      </a>
-                    </div>
-                  } />
-                </Routes>
+                <HomePage />
+              </Layout>
+            } />
+            <Route path="/transparency" element={
+              <Layout>
+                <TransparencyPortal />
+              </Layout>
+            } />
+            <Route path="/disaster/:id" element={
+              <Layout>
+                <DisasterDetails />
+              </Layout>
+            } />
+            <Route path="/proof-gallery" element={
+              <Layout>
+                <ProofGallery />
+              </Layout>
+            } />
+            
+            {/* Role-based Protected Routes */}
+            
+            {/* Admin Dashboard - Admin role required */}
+            <Route 
+              path="/admin" 
+              element={
+                <Layout>
+                  <ProtectedRoute requiredRoles={['admin']}>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                </Layout>
+              } 
+            />
+            
+            {/* Government Dashboard - Government role required */}
+            <Route 
+              path="/government" 
+              element={
+                <Layout>
+                  <ProtectedRoute requiredRoles={['government']}>
+                    <GovernmentDashboard />
+                  </ProtectedRoute>
+                </Layout>
+              } 
+            />
+            
+            {/* Treasury Dashboard - Treasury role required */}
+            <Route 
+              path="/treasury" 
+              element={
+                <Layout>
+                  <ProtectedRoute requiredRoles={['treasury']}>
+                    <TreasuryDashboard />
+                  </ProtectedRoute>
+                </Layout>
+              } 
+            />
+            
+            {/* Oracle Dashboard - Oracle role required */}
+            <Route 
+              path="/oracle" 
+              element={
+                <Layout>
+                  <ProtectedRoute requiredRoles={['oracle']}>
+                    <OracleDashboard />
+                  </ProtectedRoute>
+                </Layout>
+              } 
+            />
+            
+            {/* Vendor Portal - Vendor role required */}
+            <Route 
+              path="/vendor" 
+              element={
+                <Layout>
+                  <ProtectedRoute requiredRoles={['vendor']}>
+                    <VendorPortal />
+                  </ProtectedRoute>
+                </Layout>
+              } 
+            />
+            
+            {/* Victim Portal - Victim role required */}
+            <Route 
+              path="/victim" 
+              element={
+                <Layout>
+                  <ProtectedRoute requiredRoles={['victim']}>
+                    <VictimPortal />
+                  </ProtectedRoute>
+                </Layout>
+              } 
+            />
+            
+            {/* Donor Dashboard - Donor role or authenticated user */}
+            <Route 
+              path="/donate" 
+              element={
+                <Layout>
+                  <ProtectedRoute requireAuth={true}>
+                    <DonorDashboard />
+                  </ProtectedRoute>
+                </Layout>
+              } 
+            />
+            
+            {/* Dashboard redirect based on role */}
+            <Route path="/dashboard" element={
+              <Layout>
+                <RoleBasedRouter />
+              </Layout>
+            } />
+            
+            {/* 404 Page */}
+            <Route path="*" element={
+              <Layout>
+                <div className="py-16 text-center">
+                  <h1 className="mb-4 text-4xl font-bold text-gray-900">404</h1>
+                  <p className="mb-8 text-gray-600">Page not found</p>
+                  <a href="/" className="btn-primary">
+                    Return Home
+                  </a>
+                </div>
               </Layout>
             } />
           </Routes>
