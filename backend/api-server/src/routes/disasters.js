@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const disasterController = require('../controllers/disasterController');
-const auth = require('../middleware/auth');
+const { requireAuth, requireRole, requirePermission } = require("../middleware/auth");
 const validation = require('../middleware/validation');
 
 // Get all disasters
@@ -12,14 +12,14 @@ router.get('/:id', disasterController.getDisasterById);
 
 // Create new disaster (admin only)
 router.post('/', 
-  auth.requireAdmin,
+  requireRole(["admin"]),
   validation.createDisaster,
   disasterController.createDisaster
 );
 
 // Update disaster status
 router.patch('/:id/status',
-  auth.requireAdmin,
+  requireRole(["admin"]),
   validation.updateDisasterStatus,
   disasterController.updateDisasterStatus
 );

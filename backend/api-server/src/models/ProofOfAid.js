@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/connection');
 
-const ProofOfAid = sequelize.define('proof_of_aid', {
+const ProofOfAid = sequelize.define('ProofOfAid', {
   proofId: {
     type: DataTypes.INTEGER,
     unique: true,
@@ -25,6 +25,8 @@ const ProofOfAid = sequelize.define('proof_of_aid', {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   }
+}, {
+  tableName: 'proof_of_aid'
 });
 
 module.exports = ProofOfAid;

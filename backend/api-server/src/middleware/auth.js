@@ -73,6 +73,22 @@ const ROLE_PERMISSIONS = {
 // Basic authentication middleware
 const requireAuth = async (req, res, next) => {
   try {
+    // Development mode bypass
+    if (process.env.DISABLE_JWT_AUTH === 'true' && process.env.NODE_ENV === 'development') {
+      const defaultRole = process.env.DEFAULT_DEV_ROLE || 'admin';
+      req.user = {
+        id: 'dev-user-1',
+        email: `${defaultRole}@relief.network`,
+        role: defaultRole,
+        verified: true,
+        authMethod: 'development-bypass',
+        permissions: ROLE_PERMISSIONS[defaultRole] || ROLE_PERMISSIONS.guest,
+        roleLevel: ROLE_HIERARCHY[defaultRole] || ROLE_HIERARCHY.guest
+      };
+      console.log(`🔓 Development mode: Auth bypassed, using role: ${defaultRole}`);
+      return next();
+    }
+
     const token = req.headers.authorization?.replace('Bearer ', '');
     
     if (!token) {
@@ -245,6 +261,21 @@ const requireAnalyticsAccess = requirePermission(['analytics:view', 'analytics:f
 // Optional authentication (for public endpoints that benefit from user context)
 const optionalAuth = async (req, res, next) => {
   try {
+    // Development mode bypass
+    if (process.env.DISABLE_JWT_AUTH === 'true' && process.env.NODE_ENV === 'development') {
+      const defaultRole = process.env.DEFAULT_DEV_ROLE || 'admin';
+      req.user = {
+        id: 'dev-user-1',
+        email: `${defaultRole}@relief.network`,
+        role: defaultRole,
+        verified: true,
+        authMethod: 'development-bypass',
+        permissions: ROLE_PERMISSIONS[defaultRole] || ROLE_PERMISSIONS.guest,
+        roleLevel: ROLE_HIERARCHY[defaultRole] || ROLE_HIERARCHY.guest
+      };
+      return next();
+    }
+
     const token = req.headers.authorization?.replace('Bearer ', '');
     
     if (token) {

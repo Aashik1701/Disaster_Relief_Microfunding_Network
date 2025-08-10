@@ -1,23 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const notificationController = require('../controllers/notificationController');
-const auth = require('../middleware/auth');
+const { requireAuth, requireRole, requirePermission } = require("../middleware/auth");
 
 // Send email notification
 router.post('/email', 
-  auth.requireAdmin,
+  requireRole(["admin"]),
   notificationController.sendEmail
 );
 
 // Send SMS notification
 router.post('/sms', 
-  auth.requireAdmin,
+  requireRole(["admin"]),
   notificationController.sendSMS
 );
 
 // Get notification logs
 router.get('/logs', 
-  auth.requireAdmin,
+  requireRole(["admin"]),
   notificationController.getNotificationLogs
 );
 

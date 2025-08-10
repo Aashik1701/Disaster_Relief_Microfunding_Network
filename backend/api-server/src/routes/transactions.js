@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const transactionController = require('../controllers/transactionController');
-const auth = require('../middleware/auth');
+const { requireAuth, requireRole, requirePermission } = require("../middleware/auth");
 const validation = require('../middleware/validation');
 
 // Get all transactions
@@ -12,7 +12,7 @@ router.get('/:hash', transactionController.getTransactionByHash);
 
 // Create new transaction
 router.post('/', 
-  auth.requireVendor,
+  requireRole(["vendor"]),
   validation.createTransaction,
   transactionController.createTransaction
 );

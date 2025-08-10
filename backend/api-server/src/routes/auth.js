@@ -183,7 +183,7 @@ if (process.env.NODE_ENV === 'development') {
   // Demo login endpoints for quick testing
   router.post('/demo-login/:role', (req, res) => {
     const { role } = req.params;
-    const validRoles = ['admin', 'vendor', 'victim', 'donor'];
+    const validRoles = ['admin', 'government', 'treasury', 'oracle', 'vendor', 'victim', 'donor'];
     
     if (!validRoles.includes(role)) {
       return res.status(400).json({

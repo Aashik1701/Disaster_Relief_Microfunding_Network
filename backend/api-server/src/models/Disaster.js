@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/connection');
 
-const Disaster = sequelize.define('disaster', {
+const Disaster = sequelize.define('Disaster', {
   zoneId: {
     type: DataTypes.INTEGER,
     unique: true,
@@ -41,6 +41,8 @@ const Disaster = sequelize.define('disaster', {
   },
   txHash: DataTypes.STRING(66),
   createdBy: DataTypes.INTEGER
+}, {
+  tableName: 'disasters'
 });
 
 module.exports = Disaster;

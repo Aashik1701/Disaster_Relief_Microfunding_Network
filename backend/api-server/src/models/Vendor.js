@@ -1,11 +1,19 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/connection');
 
-const Vendor = sequelize.define('vendor', {
+const Vendor = sequelize.define('Vendor', {
   walletAddress: {
     type: DataTypes.STRING(42),
     unique: true,
     allowNull: false
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'users',
+      key: 'id'
+    }
   },
   name: {
     type: DataTypes.STRING,
@@ -33,6 +41,8 @@ const Vendor = sequelize.define('vendor', {
     type: DataTypes.DECIMAL(3, 2),
     defaultValue: 0
   }
+}, {
+  tableName: 'vendors'
 });
 
 module.exports = Vendor;

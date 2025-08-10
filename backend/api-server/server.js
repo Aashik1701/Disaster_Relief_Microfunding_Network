@@ -35,6 +35,9 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Routes
+app.use('/api/users', require('./src/routes/users'));
+app.use('/api/settings', require('./src/routes/settings'));
+app.use('/api/audit', require('./src/routes/audit'));
 app.use('/api/disasters', require('./src/routes/disasters'));
 app.use('/api/vendors', require('./src/routes/vendors'));
 app.use('/api/transactions', require('./src/routes/transactions'));

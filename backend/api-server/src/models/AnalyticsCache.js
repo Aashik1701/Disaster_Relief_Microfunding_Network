@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/connection');
 
-const AnalyticsCache = sequelize.define('analytics_cache', {
+const AnalyticsCache = sequelize.define('AnalyticsCache', {
   cacheKey: {
     type: DataTypes.STRING(255),
     unique: true,
@@ -15,6 +15,8 @@ const AnalyticsCache = sequelize.define('analytics_cache', {
     type: DataTypes.DATE,
     allowNull: false
   }
+}, {
+  tableName: 'analytics_cache'
 });
 
 module.exports = AnalyticsCache;

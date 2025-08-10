@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/connection');
 
-const Transaction = sequelize.define('transaction', {
+const Transaction = sequelize.define('Transaction', {
   txHash: {
     type: DataTypes.STRING(66),
     unique: true,
@@ -14,6 +14,14 @@ const Transaction = sequelize.define('transaction', {
   vendorAddress: {
     type: DataTypes.STRING(42),
     allowNull: false
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'users',
+      key: 'id'
+    }
   },
   beneficiary: DataTypes.STRING(42),
   amount: {
@@ -33,6 +41,8 @@ const Transaction = sequelize.define('transaction', {
     type: DataTypes.STRING(50),
     defaultValue: 'confirmed'
   }
+}, {
+  tableName: 'transactions'
 });
 
 module.exports = Transaction;
