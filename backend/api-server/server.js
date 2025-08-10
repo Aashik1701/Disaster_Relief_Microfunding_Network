@@ -12,6 +12,9 @@ const dataService = require('./src/services/dataService');
 
 const app = express();
 
+const ipfsRoutes = require('./src/routes/ipfs');
+app.use('/api/ipfs', ipfsRoutes);
+
 // Middleware
 app.use(helmet());
 app.use(compression());
