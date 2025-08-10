@@ -23,6 +23,7 @@ const VendorPortal = lazy(() => import('./pages/VendorPortal'))
 const TransparencyPortal = lazy(() => import('./pages/TransparencyPortal'))
 const DisasterDetails = lazy(() => import('./pages/DisasterDetails'))
 const ProofGallery = lazy(() => import('./pages/ProofGallery'))
+const APITestPage = lazy(() => import('./pages/APITestPage'))
 
 // Import role-based router
 const RoleBasedRouter = lazy(() => import('./components/Auth/RoleBasedRouter'))
@@ -102,6 +103,15 @@ function App() {
                 <ProofGallery />
               </Layout>
             } />
+            
+            {/* API Test Page - Development only */}
+            {import.meta.env.DEV && (
+              <Route path="/api-test" element={
+                <Layout>
+                  <APITestPage />
+                </Layout>
+              } />
+            )}
             
             {/* Role-based Protected Routes */}
             

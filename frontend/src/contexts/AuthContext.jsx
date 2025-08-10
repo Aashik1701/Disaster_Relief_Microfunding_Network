@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useWeb3Store } from '../store/web3Store';
 import { showSuccess, showWarning, handleError } from '../utils/errorHandler';
+import apiService from '../services/apiService';
 
 const AuthContext = createContext();
 
@@ -95,44 +96,125 @@ export const AuthProvider = ({ children }) => {
   const initializeAuth = async () => {
     setIsLoading(true);
     try {
-      // Check for traditional authentication
+      // In development mode, check if backend is accessible
+      if (import.meta.env.DEV) {
+        try {
+          const healthCheck = await apiService.getHealthStatus();
+          console.log('✅ Backend connection verified:', healthCheck);
+        } catch (error) {
+          console.warn('⚠️ Backend not accessible, using fallback auth');
+        }
+      }
+
+      // Check for traditional authentication first
       const authToken = localStorage.getItem('authToken');
       const userData = localStorage.getItem('userData');
 
       if (authToken && userData) {
-        // Traditional authentication
-        const parsedUser = JSON.parse(userData);
-        setUser({
-          ...parsedUser,
-          authMethod: 'traditional',
-          permissions: ROLE_PERMISSIONS[parsedUser.role] || []
-        });
-        setIsAuthenticated(true);
-        setAuthMethod('traditional');
+        try {
+          // Verify token with backend
+          apiService.setAuthToken(authToken);
+          const verification = await apiService.verifyToken();
+          
+          if (verification.success) {
+            const parsedUser = JSON.parse(userData);
+            setUser({
+              ...parsedUser,
+              authMethod: 'traditional',
+              permissions: ROLE_PERMISSIONS[parsedUser.role] || []
+            });
+            setIsAuthenticated(true);
+            setAuthMethod('traditional');
+          } else {
+            // Token invalid, clear storage
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userData');
+            apiService.setAuthToken(null);
+          }
+        } catch (error) {
+          console.warn('Token verification failed:', error);
+          // Clear invalid auth
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('userData');
+          apiService.setAuthToken(null);
+        }
       } else if (isConnected && account && web3Role) {
-        // Web3 authentication
-        const web3User = {
-          id: account,
-          address: account,
-          role: web3Role,
-          authMethod: 'wallet',
-          permissions: ROLE_PERMISSIONS[web3Role] || [],
-          verified: true
-        };
-        setUser(web3User);
-        setIsAuthenticated(true);
-        setAuthMethod('wallet');
+        // Web3 authentication - check if user exists in database
+        try {
+          const dbUser = await apiService.getUserByWallet(account);
+          
+          if (dbUser.success && dbUser.data) {
+            // User exists in database
+            const web3User = {
+              ...dbUser.data,
+              authMethod: 'wallet',
+              permissions: ROLE_PERMISSIONS[dbUser.data.role] || [],
+              verified: true
+            };
+            setUser(web3User);
+            setIsAuthenticated(true);
+            setAuthMethod('wallet');
+          } else {
+            // User doesn't exist, create profile
+            const newUser = {
+              walletAddress: account,
+              role: web3Role,
+              status: 'active',
+              name: `User ${account.slice(0, 6)}...${account.slice(-4)}`,
+              authMethod: 'wallet',
+              permissions: ROLE_PERMISSIONS[web3Role] || [],
+              verified: false
+            };
+            
+            try {
+              const createdUser = await apiService.createUser(newUser);
+              if (createdUser.success) {
+                setUser({
+                  ...createdUser.data,
+                  authMethod: 'wallet',
+                  permissions: ROLE_PERMISSIONS[createdUser.data.role] || []
+                });
+                setIsAuthenticated(true);
+                setAuthMethod('wallet');
+                showSuccess('Welcome! Your profile has been created.');
+              }
+            } catch (createError) {
+              // If creation fails, use local user without DB sync
+              console.warn('User creation failed, using local auth:', createError);
+              setUser(newUser);
+              setIsAuthenticated(true);
+              setAuthMethod('wallet');
+            }
+          }
+        } catch (error) {
+          // Database lookup failed, use local web3 auth
+          console.warn('Database lookup failed, using local web3 auth:', error);
+          const web3User = {
+            id: account,
+            address: account,
+            walletAddress: account,
+            role: web3Role,
+            authMethod: 'wallet',
+            permissions: ROLE_PERMISSIONS[web3Role] || [],
+            verified: true
+          };
+          setUser(web3User);
+          setIsAuthenticated(true);
+          setAuthMethod('wallet');
+        }
       } else {
         // No authentication
         setUser(null);
         setIsAuthenticated(false);
         setAuthMethod(null);
+        apiService.setAuthToken(null);
       }
     } catch (error) {
       console.error('Auth initialization error:', error);
       setUser(null);
       setIsAuthenticated(false);
       setAuthMethod(null);
+      apiService.setAuthToken(null);
     } finally {
       setIsLoading(false);
     }
@@ -141,32 +223,29 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     setIsLoading(true);
     try {
-      // Traditional login
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials)
-      });
+      // Traditional login via API
+      const response = await apiService.login(credentials);
 
-      if (!response.ok) {
-        throw new Error('Invalid credentials');
+      if (response.success && response.data) {
+        const { token, user: userData } = response.data;
+        
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('userData', JSON.stringify(userData));
+        apiService.setAuthToken(token);
+        
+        setUser({
+          ...userData,
+          authMethod: 'traditional',
+          permissions: ROLE_PERMISSIONS[userData.role] || []
+        });
+        setIsAuthenticated(true);
+        setAuthMethod('traditional');
+        
+        showSuccess(`Welcome back, ${userData.firstName || userData.name}!`);
+        return userData;
+      } else {
+        throw new Error(response.message || 'Login failed');
       }
-
-      const { token, user: userData } = await response.json();
-      
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('userData', JSON.stringify(userData));
-      
-      setUser({
-        ...userData,
-        authMethod: 'traditional',
-        permissions: ROLE_PERMISSIONS[userData.role] || []
-      });
-      setIsAuthenticated(true);
-      setAuthMethod('traditional');
-      
-      showSuccess(`Welcome back, ${userData.firstName}!`);
-      return userData;
     } catch (error) {
       handleError(error, { context: 'Login' });
       throw error;
@@ -177,6 +256,13 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
+      // Call backend logout endpoint
+      try {
+        await apiService.logout();
+      } catch (error) {
+        console.warn('Backend logout failed:', error);
+      }
+
       if (authMethod === 'wallet') {
         await disconnect();
       }
@@ -185,6 +271,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('authToken');
       localStorage.removeItem('userData');
       localStorage.removeItem('registrationData');
+      apiService.setAuthToken(null);
       
       setUser(null);
       setIsAuthenticated(false);
@@ -199,19 +286,14 @@ export const AuthProvider = ({ children }) => {
   const register = async (registrationData) => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(registrationData)
-      });
+      const response = await apiService.register(registrationData);
 
-      if (!response.ok) {
-        throw new Error('Registration failed');
+      if (response.success && response.data) {
+        showSuccess('Registration successful! Please check your email to verify your account.');
+        return response.data;
+      } else {
+        throw new Error(response.message || 'Registration failed');
       }
-
-      const { user: userData } = await response.json();
-      showSuccess('Registration successful! Please check your email to verify your account.');
-      return userData;
     } catch (error) {
       handleError(error, { context: 'Registration' });
       throw error;
@@ -223,29 +305,25 @@ export const AuthProvider = ({ children }) => {
   const updateProfile = async (updates) => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/auth/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-        },
-        body: JSON.stringify(updates)
-      });
+      const response = await apiService.updateProfile(updates);
 
-      if (!response.ok) {
-        throw new Error('Profile update failed');
+      if (response.success && response.data) {
+        const updatedUser = response.data;
+        setUser(prev => ({
+          ...prev,
+          ...updatedUser,
+          permissions: ROLE_PERMISSIONS[updatedUser.role] || prev.permissions
+        }));
+        
+        if (authMethod === 'traditional') {
+          localStorage.setItem('userData', JSON.stringify(updatedUser));
+        }
+        
+        showSuccess('Profile updated successfully');
+        return updatedUser;
+      } else {
+        throw new Error(response.message || 'Profile update failed');
       }
-
-      const { user: updatedUser } = await response.json();
-      setUser(prev => ({
-        ...prev,
-        ...updatedUser,
-        permissions: ROLE_PERMISSIONS[updatedUser.role] || prev.permissions
-      }));
-      
-      localStorage.setItem('userData', JSON.stringify(updatedUser));
-      showSuccess('Profile updated successfully');
-      return updatedUser;
     } catch (error) {
       handleError(error, { context: 'Profile Update' });
       throw error;

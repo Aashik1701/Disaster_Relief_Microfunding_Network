@@ -10,15 +10,26 @@ const REQUEST_TIMEOUT = 10000 // 10 seconds
 const RETRY_ATTEMPTS = 3
 const RETRY_DELAY = 1000 // 1 second
 
+// Development mode - matches backend auth bypass
+const DEV_MODE = import.meta.env.DEV || import.meta.env.NODE_ENV === 'development'
+
 class ApiService {
   constructor() {
     this.baseURL = API_BASE_URL
     this.headers = {
       'Content-Type': 'application/json',
     }
+    
+    // Add development headers for auth bypass (matches backend)
+    if (DEV_MODE) {
+      this.headers['X-Dev-Mode'] = 'true'
+      this.headers['X-Dev-Role'] = 'admin' // Default dev role
+    }
+    
     this.requestQueue = []
     this.isOnline = navigator.onLine
     this.setupOfflineHandling()
+    this.loadQueueFromStorage()
   }
 
   /**
@@ -476,16 +487,36 @@ class ApiService {
   }
 
   // ==============================================
-  // AUTH API ENDPOINTS
+  // AUTHENTICATION API ENDPOINTS
   // ==============================================
 
   /**
    * Authenticate user with wallet signature
    */
   async authenticate(data) {
-    return this.request('/auth/wallet', {
+    return this.request('/auth/wallet-login', {
       method: 'POST',
       body: JSON.stringify(data),
+    })
+  }
+
+  /**
+   * Traditional login
+   */
+  async login(credentials) {
+    return this.request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    })
+  }
+
+  /**
+   * Register new user
+   */
+  async register(userData) {
+    return this.request('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(userData),
     })
   }
 
@@ -499,20 +530,150 @@ class ApiService {
   }
 
   /**
-   * Get user profile
+   * Logout
    */
-  async getUserProfile(address) {
-    return this.request(`/users/${address}`)
+  async logout() {
+    return this.request('/auth/logout', {
+      method: 'POST',
+    })
   }
 
   /**
-   * Update user profile
+   * Verify current token
    */
-  async updateUserProfile(address, data) {
-    return this.request(`/users/${address}`, {
-      method: 'PATCH',
+  async verifyToken() {
+    return this.request('/auth/verify')
+  }
+
+  /**
+   * Get current user profile
+   */
+  async getProfile() {
+    return this.request('/auth/profile')
+  }
+
+  /**
+   * Update current user profile
+   */
+  async updateProfile(data) {
+    return this.request('/auth/profile', {
+      method: 'PUT',
       body: JSON.stringify(data),
     })
+  }
+
+  // ==============================================
+  // USER MANAGEMENT API ENDPOINTS
+  // ==============================================
+
+  /**
+   * Get user by wallet address
+   */
+  async getUserByWallet(walletAddress) {
+    return this.request(`/users/wallet/${walletAddress}`)
+  }
+
+  /**
+   * Get user by ID
+   */
+  async getUserById(id) {
+    return this.request(`/users/${id}`)
+  }
+
+  /**
+   * Get all users (admin only)
+   */
+  async getUsers(params = {}) {
+    const queryString = new URLSearchParams(params).toString()
+    const endpoint = `/users${queryString ? `?${queryString}` : ''}`
+    return this.request(endpoint)
+  }
+
+  /**
+   * Create new user (admin only)
+   */
+  async createUser(userData) {
+    return this.request('/users', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    })
+  }
+
+  /**
+   * Update user (admin only)
+   */
+  async updateUser(id, userData) {
+    return this.request(`/users/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(userData),
+    })
+  }
+
+  /**
+   * Get user statistics
+   */
+  async getUserStats() {
+    return this.request('/users/stats')
+  }
+
+  /**
+   * Get user audit history
+   */
+  async getUserAuditHistory(id) {
+    return this.request(`/users/${id}/audit`)
+  }
+
+  // ==============================================
+  // SYSTEM SETTINGS API ENDPOINTS
+  // ==============================================
+
+  /**
+   * Get all system settings (admin only)
+   */
+  async getSystemSettings(category = null) {
+    const endpoint = category ? `/settings?category=${category}` : '/settings'
+    return this.request(endpoint)
+  }
+
+  /**
+   * Get specific system setting
+   */
+  async getSystemSetting(key, defaultValue = null) {
+    const endpoint = `/settings/${key}${defaultValue ? `?defaultValue=${defaultValue}` : ''}`
+    return this.request(endpoint)
+  }
+
+  /**
+   * Update system setting (admin only)
+   */
+  async updateSystemSetting(key, value, type = 'string', description = null, category = 'general') {
+    return this.request(`/settings/${key}`, {
+      method: 'PUT',
+      body: JSON.stringify({ value, type, description, category }),
+    })
+  }
+
+  // ==============================================
+  // HEALTH CHECK API ENDPOINTS
+  // ==============================================
+
+  /**
+   * Get system health status
+   */
+  async getHealthStatus() {
+    const healthURL = API_BASE_URL.replace('/api', '/health')
+    return this.executeRequest(healthURL, {
+      method: 'GET',
+      headers: this.headers,
+      timeout: REQUEST_TIMEOUT,
+    })
+  }
+
+  /**
+   * Get database health
+   */
+  async getDatabaseHealth() {
+    return this.request('/health/database')
   }
 }
 
