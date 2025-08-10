@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import {Script, console} from "forge-std/Script.sol";
+import { Script, console } from "forge-std/Script.sol";
 import "../src/DisasterReliefBondsV3.sol";
 import "../src/MockUSDC.sol";
 
@@ -10,7 +10,7 @@ import "../src/MockUSDC.sol";
  * @dev Deployment script for the enhanced Disaster Relief Bonds system with AVAX support
  */
 contract DeployDisasterReliefBondsV3 is Script {
-    function setUp() public {}
+    function setUp() public { }
 
     function run() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
@@ -19,7 +19,7 @@ contract DeployDisasterReliefBondsV3 is Script {
         // Deploy MockUSDC first (or use existing)
         address existingUSDC = vm.envOr("EXISTING_USDC_ADDRESS", address(0));
         MockUSDC usdc;
-        
+
         if (existingUSDC == address(0)) {
             console.log("Deploying new MockUSDC...");
             usdc = new MockUSDC();
@@ -36,12 +36,12 @@ contract DeployDisasterReliefBondsV3 is Script {
 
         // Setup initial configuration
         console.log("Setting up initial configuration...");
-        
+
         // Add deployer as oracle and government for testing
         reliefBonds.addOracle(msg.sender);
         reliefBonds.addGovernment(msg.sender);
         reliefBonds.addTreasuryManager(msg.sender);
-        
+
         console.log("Setup complete!");
         console.log("Admin:", msg.sender);
         console.log("Oracle added:", msg.sender);
@@ -51,17 +51,18 @@ contract DeployDisasterReliefBondsV3 is Script {
         // Test AVAX bond issuance (optional)
         console.log("\n=== TESTING AVAX FUNCTIONALITY ===");
         console.log("Deployer AVAX balance:", msg.sender.balance);
-        
+
         if (msg.sender.balance >= 0.5 ether) {
             console.log("Creating test AVAX bond with 0.1 AVAX...");
-            uint256 bondId = reliefBonds.issueAVAXBond{value: 0.1 ether}(
+            uint256 bondId = reliefBonds.issueAVAXBond{ value: 0.1 ether }(
                 12, // 12 months maturity
                 "Test Individual Donor"
             );
             console.log("Test AVAX bond created with ID:", bondId);
-            
+
             // Check pool balances
-            (uint256 avaxBalance, uint256 usdcBalance, uint256 avaxYield, uint256 usdcYield) = reliefBonds.getPoolBalances();
+            (uint256 avaxBalance, uint256 usdcBalance, uint256 avaxYield, uint256 usdcYield) =
+                reliefBonds.getPoolBalances();
             console.log("Contract AVAX balance:", avaxBalance);
             console.log("Contract USDC balance:", usdcBalance);
             console.log("AVAX yield reserve:", avaxYield);
@@ -81,7 +82,7 @@ contract DeployDisasterReliefBondsV3 is Script {
         console.log("DisasterReliefBondsV3:", address(reliefBonds));
         console.log("\n=== NEW AVAX FEATURES ===");
         console.log("- Native AVAX bond issuance");
-        console.log("- AVAX yield generation"); 
+        console.log("- AVAX yield generation");
         console.log("- AVAX emergency payouts");
         console.log("- Direct AVAX donations");
         console.log("- Mixed AVAX/USDC portfolios");

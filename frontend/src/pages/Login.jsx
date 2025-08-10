@@ -142,17 +142,17 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-avalanche-50 to-blue-50 flex items-center justify-center py-12 px-4">
-      <div className="max-w-md w-full">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-br from-avalanche-50 to-blue-50">
+      <div className="w-full max-w-md">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8"
+          className="mb-8 text-center"
         >
           <div className="flex items-center justify-center mb-4">
-            <Mountain className="w-12 h-12 text-avalanche-500 mr-2" />
+            <Mountain className="w-12 h-12 mr-2 text-avalanche-500" />
             <h1 className="text-2xl font-bold text-gray-900">Relief Network</h1>
           </div>
           <p className="text-gray-600">
@@ -165,7 +165,7 @@ const Login = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-gray-100 p-1 rounded-lg mb-6"
+          className="p-1 mb-6 bg-gray-100 rounded-lg"
         >
           <div className="grid grid-cols-2 gap-1">
             <button
@@ -176,7 +176,7 @@ const Login = () => {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              <Wallet className="w-4 h-4 inline mr-2" />
+              <Wallet className="inline w-4 h-4 mr-2" />
               Web3 Wallet
             </button>
             <button
@@ -187,7 +187,7 @@ const Login = () => {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              <User className="w-4 h-4 inline mr-2" />
+              <User className="inline w-4 h-4 mr-2" />
               Email Login
             </button>
           </div>
@@ -198,7 +198,7 @@ const Login = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white rounded-xl shadow-lg p-6"
+          className="p-6 bg-white shadow-lg rounded-xl"
         >
           <AnimatePresence mode="wait">
             {authMode === 'wallet' ? (
@@ -211,11 +211,11 @@ const Login = () => {
                 transition={{ duration: 0.3 }}
               >
                 <div className="text-center">
-                  <Shield className="w-16 h-16 text-avalanche-500 mx-auto mb-4" />
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                  <Shield className="w-16 h-16 mx-auto mb-4 text-avalanche-500" />
+                  <h2 className="mb-2 text-xl font-semibold text-gray-900">
                     Web3 Wallet Login
                   </h2>
-                  <p className="text-gray-600 mb-6">
+                  <p className="mb-6 text-gray-600">
                     Connect your wallet to access the platform. Your role will be automatically detected.
                   </p>
 
@@ -243,18 +243,18 @@ const Login = () => {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
               >
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                <h2 className="mb-6 text-xl font-semibold text-gray-900">
                   Email Login
                 </h2>
 
                 <form onSubmit={handleTraditionalLogin} className="space-y-4">
                   {/* Email Field */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block mb-1 text-sm font-medium text-gray-700 bg-white">
                       Email Address
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                      <Mail className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
                       <input
                         type="email"
                         name="email"
@@ -267,7 +267,7 @@ const Login = () => {
                       />
                     </div>
                     {errors.email && (
-                      <p className="mt-1 text-sm text-red-600 flex items-center">
+                      <p className="flex items-center mt-1 text-sm text-red-600">
                         <AlertCircle className="w-4 h-4 mr-1" />
                         {errors.email}
                       </p>
@@ -276,11 +276,11 @@ const Login = () => {
 
                   {/* Password Field */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
                       Password
                     </label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                      <Lock className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
                       <input
                         type={showPassword ? 'text' : 'password'}
                         name="password"
@@ -294,13 +294,13 @@ const Login = () => {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                        className="absolute text-gray-400 right-3 top-3 hover:text-gray-600"
                       >
                         {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
                     </div>
                     {errors.password && (
-                      <p className="mt-1 text-sm text-red-600 flex items-center">
+                      <p className="flex items-center mt-1 text-sm text-red-600">
                         <AlertCircle className="w-4 h-4 mr-1" />
                         {errors.password}
                       </p>
@@ -309,8 +309,8 @@ const Login = () => {
 
                   {/* General Error */}
                   {errors.general && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                      <p className="text-sm text-red-600 flex items-center">
+                    <div className="p-3 border border-red-200 rounded-lg bg-red-50">
+                      <p className="flex items-center text-sm text-red-600">
                         <AlertCircle className="w-4 h-4 mr-2" />
                         {errors.general}
                       </p>
@@ -328,8 +328,8 @@ const Login = () => {
                 </form>
 
                 {/* Demo Credentials */}
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                  <h3 className="text-sm font-medium text-blue-900 mb-2">Demo Credentials:</h3>
+                <div className="p-4 mt-6 rounded-lg bg-blue-50">
+                  <h3 className="mb-2 text-sm font-medium text-blue-900">Demo Credentials:</h3>
                   <div className="space-y-1 text-xs text-blue-700">
                     <p><strong>Admin:</strong> admin@relief.network / demo123</p>
                     <p><strong>Vendor:</strong> vendor@relief.network / demo123</p>
@@ -352,7 +352,7 @@ const Login = () => {
           <div className="text-sm text-gray-600">
             <Link 
               to="/register"
-              className="text-avalanche-600 hover:text-avalanche-700 font-medium"
+              className="font-medium text-avalanche-600 hover:text-avalanche-700"
             >
               Need an account? Register here
             </Link>
@@ -372,16 +372,16 @@ const Login = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-8 bg-white rounded-lg p-4 shadow-sm"
+          className="p-4 mt-8 bg-white rounded-lg shadow-sm"
         >
-          <h3 className="text-sm font-medium text-gray-900 mb-3">Platform Roles:</h3>
+          <h3 className="mb-3 text-sm font-medium text-gray-900">Platform Roles:</h3>
           <div className="space-y-2">
             {Object.entries(roleDescriptions).map(([role, description]) => (
               <div key={role} className="flex items-start">
                 <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
                 <div>
                   <span className="text-sm font-medium text-gray-900 capitalize">{role}:</span>
-                  <span className="text-sm text-gray-600 ml-1">{description}</span>
+                  <span className="ml-1 text-sm text-gray-600">{description}</span>
                 </div>
               </div>
             ))}
@@ -393,7 +393,7 @@ const Login = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-8 text-center text-xs text-gray-500"
+          className="mt-8 text-xs text-center text-gray-500"
         >
           <p>Powered by Avalanche Blockchain</p>
           <p className="mt-1">

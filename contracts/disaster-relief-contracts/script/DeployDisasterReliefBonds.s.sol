@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import {Script, console} from "forge-std/Script.sol";
+import { Script, console } from "forge-std/Script.sol";
 import "../src/DisasterReliefBondsV2.sol";
 import "../src/MockUSDC.sol";
 
@@ -10,7 +10,7 @@ import "../src/MockUSDC.sol";
  * @dev Deployment script for the revolutionary Disaster Relief Bonds system
  */
 contract DeployDisasterReliefBonds is Script {
-    function setUp() public {}
+    function setUp() public { }
 
     function run() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
@@ -19,7 +19,7 @@ contract DeployDisasterReliefBonds is Script {
         // Deploy MockUSDC first (or use existing)
         address existingUSDC = vm.envOr("EXISTING_USDC_ADDRESS", address(0));
         MockUSDC usdc;
-        
+
         if (existingUSDC == address(0)) {
             console.log("Deploying new MockUSDC...");
             usdc = new MockUSDC();
@@ -36,12 +36,12 @@ contract DeployDisasterReliefBonds is Script {
 
         // Setup initial configuration
         console.log("Setting up initial configuration...");
-        
+
         // Add deployer as oracle and government for testing
         reliefBonds.addOracle(msg.sender);
         reliefBonds.addGovernment(msg.sender);
         reliefBonds.addTreasuryManager(msg.sender);
-        
+
         console.log("Setup complete!");
         console.log("Admin:", msg.sender);
         console.log("Oracle added:", msg.sender);
