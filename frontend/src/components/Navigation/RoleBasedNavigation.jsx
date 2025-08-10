@@ -206,65 +206,6 @@ const RoleBasedNavigation = ({ isMobile = false }) => {
       {navigationItems.map((item) => (
         <NavItem key={item.href} item={item} />
       ))}
-
-      {/* Quick Actions for authenticated users */}
-      {isAuthenticated && (
-        <>
-          <div className={`pt-6 mt-6 border-t border-gray-200 ${isMobile ? 'px-4' : 'px-2'}`}>
-            <h3 className={`text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 ${isMobile ? 'block' : 'hidden lg:block'}`}>
-              Quick Actions
-            </h3>
-          </div>
-          
-          <RoleGuard roles={['admin', 'government']} fallback={null}>
-            <Link
-              to="/disasters/new"
-              className="flex items-center px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
-            >
-              <Shield className={`${isMobile ? 'w-4 h-4 mr-2' : 'w-4 h-4 lg:mr-2'}`} />
-              <span className={`${isMobile ? 'block' : 'hidden lg:block'}`}>
-                Declare Emergency
-              </span>
-            </Link>
-          </RoleGuard>
-
-          <RoleGuard roles={['treasury']} fallback={null}>
-            <Link
-              to="/treasury/emergency-release"
-              className="flex items-center px-4 py-2 text-sm text-white bg-orange-600 rounded-lg hover:bg-orange-700 transition-colors"
-            >
-              <Banknote className={`${isMobile ? 'w-4 h-4 mr-2' : 'w-4 h-4 lg:mr-2'}`} />
-              <span className={`${isMobile ? 'block' : 'hidden lg:block'}`}>
-                Emergency Release
-              </span>
-            </Link>
-          </RoleGuard>
-
-          <RoleGuard roles={['donor']} fallback={null}>
-            <Link
-              to="/donate/quick"
-              className="flex items-center px-4 py-2 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
-            >
-              <Heart className={`${isMobile ? 'w-4 h-4 mr-2' : 'w-4 h-4 lg:mr-2'}`} />
-              <span className={`${isMobile ? 'block' : 'hidden lg:block'}`}>
-                Quick Donate
-              </span>
-            </Link>
-          </RoleGuard>
-
-          <RoleGuard roles={['victim']} fallback={null}>
-            <Link
-              to="/victim/request-aid"
-              className="flex items-center px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Users className={`${isMobile ? 'w-4 h-4 mr-2' : 'w-4 h-4 lg:mr-2'}`} />
-              <span className={`${isMobile ? 'block' : 'hidden lg:block'}`}>
-                Request Aid
-              </span>
-            </Link>
-          </RoleGuard>
-        </>
-      )}
     </nav>
   );
 };
