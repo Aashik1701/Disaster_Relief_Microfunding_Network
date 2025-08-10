@@ -31,9 +31,8 @@ const Sidebar = ({ onClose }) => {
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-200 lg:border-b-0">
         <Link to="/" className="flex items-center" onClick={onClose}>
-          <Mountain className="w-8 h-8 text-avalanche-500" />
           <span className="ml-2 text-lg font-bold text-gray-900">
-            Relief Network
+                  Relief Network
           </span>
         </Link>
         

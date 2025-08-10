@@ -593,7 +593,11 @@ const OracleDashboard = () => {
                           <p className="font-medium text-gray-900">Data Search</p>
                           <p className="text-sm text-gray-500">Historical lookup</p>
                         </div>
-                        <Search className="w-5 h-5 text-gray-500" />
+                        <Search className="w-5 h-5 text-gray-400" />
+                        <input
+                          type="text"
+                          className="bg-white text-gray-900"
+                        />
                       </div>
                     </button>
                   </div>
