@@ -243,121 +243,99 @@ npm run dev:all
 
 ---
 
-## 📱 **User Interface Demonstrations**
+## 📱 **Complete Page Access by Role**
 
-### **🛡️ Administrator Dashboard**
-**Route**: `/admin` | **Access Level**: Level 10
+### **🎯 Role-Based Dashboard Access**
 
-**Features:**
-- Complete system overview with real-time metrics
-- User management with role assignment capabilities
-- Disaster zone creation and management interface
-- Vendor approval and verification workflows
-- System configuration and settings panel
-- Comprehensive analytics and reporting tools
+Each role has access to specific dashboards and functionalities based on their permission level:
 
-**Key Components:**
-- System metrics dashboard
-- Multi-step disaster zone creation wizard
-- User role management interface
-- Financial overview and fund allocation
-- System logs and audit trails
+| Role | Level | Primary Dashboard | Route | Access Type |
+|------|-------|------------------|-------|-------------|
+| **🛡️ Administrator** | 10 | Admin Dashboard | `/admin` | **Full System Control** |
+| **🏛️ Government** | 8 | Government Dashboard | `/government` | **Regulatory Operations** |
+| **💰 Treasury** | 7 | Treasury Dashboard | `/treasury` | **Financial Management** |
+| **🔮 Oracle** | 6 | Oracle Dashboard | `/oracle` | **Data Management** |
+| **🏪 Vendor** | 5 | Vendor Portal | `/vendor` | **Commerce Operations** |
+| **👥 Victim** | 4 | Victim Portal | `/victim` | **Beneficiary Services** |
+| **💝 Donor** | 3 | Donor Dashboard | `/donate` | **Donation Management** |
 
-### **🏛️ Government Portal**
-**Route**: `/government` | **Access Level**: Level 8
+### **📋 Detailed Page Access Matrix**
 
-**Features:**
-- Disaster event verification and approval
-- Regulatory compliance monitoring
-- Vendor application review and approval
-- Official report generation
-- Public safety oversight tools
+#### **🛡️ Administrator (Level 10)** - `/admin`
+**Full Platform Access:**
+- ✅ **Admin Dashboard** - Complete system control and user management
+- ✅ **All Public Pages** - Full transparency and information access
+- ✅ **All Role Dashboards** - Can access any dashboard for oversight
+- ✅ **System Configuration** - Advanced settings and controls
+- ✅ **User Management** - Create, modify, and manage all user accounts
+- ✅ **Analytics & Reports** - Comprehensive system analytics
 
-**Key Components:**
-- Disaster verification queue
-- Compliance monitoring dashboard
-- Vendor approval workflow
-- Regulatory reporting tools
+#### **🏛️ Government (Level 8)** - `/government`
+**Regulatory & Oversight Access:**
+- ✅ **Government Dashboard** - Disaster verification and vendor approval
+- ✅ **All Public Pages** - Public information and transparency
+- ✅ **Disaster Management** - Create and verify disaster zones
+- ✅ **Vendor Oversight** - Approve/reject vendor applications
+- ✅ **Compliance Reports** - Generate official reports
 
-### **💰 Treasury Dashboard**
-**Route**: `/treasury` | **Access Level**: Level 7
+#### **💰 Treasury (Level 7)** - `/treasury`
+**Financial Management Access:**
+- ✅ **Treasury Dashboard** - Fund allocation and budget control
+- ✅ **All Public Pages** - Public transparency and information
+- ✅ **Financial Analytics** - Treasury reports and analytics
+- ✅ **Budget Planning** - Fund allocation and emergency controls
+- ✅ **Transaction Monitoring** - Financial oversight tools
 
-**Features:**
-- Fund allocation and budget management
-- Financial analytics and reporting
-- Transaction monitoring and oversight
-- Budget planning and forecasting
-- Emergency fund release controls
+#### **🔮 Oracle (Level 6)** - `/oracle`
+**Data Management Access:**
+- ✅ **Oracle Dashboard** - Data verification and validation
+- ✅ **All Public Pages** - Public information access
+- ✅ **Price Management** - Update exchange rates and feeds
+- ✅ **System Validation** - Perform integrity checks
+- ✅ **Data Quality Control** - Ensure data accuracy
 
-**Key Components:**
-- Fund allocation interface
-- Financial analytics charts
-- Transaction monitoring tables
-- Budget planning tools
+#### **🏪 Vendor (Level 5)** - `/vendor`
+**Commerce Operations Access:**
+- ✅ **Vendor Portal** - Voucher processing and inventory
+- ✅ **All Public Pages** - Public information and transparency
+- ✅ **Transaction Processing** - Handle customer transactions
+- ✅ **Inventory Management** - Manage product availability
+- ✅ **Performance Analytics** - Vendor-specific metrics
 
-### **🔮 Oracle Dashboard**
-**Route**: `/oracle` | **Access Level**: Level 6
+#### **👥 Victim/Beneficiary (Level 4)** - `/victim`
+**Beneficiary Services Access:**
+- ✅ **Victim Portal** - Voucher and aid management
+- ✅ **All Public Pages** - Public information access
+- ✅ **Aid Requests** - Submit assistance requests
+- ✅ **Resource Discovery** - Find nearby vendors and services
+- ✅ **Personal History** - Track received assistance
 
-**Features:**
-- Data verification and validation
-- Price feed management
-- System integrity monitoring
-- External data source integration
-- Quality assurance workflows
+#### **💝 Donor (Level 3)** - `/donate`
+**Donation Management Access:**
+- ✅ **Donor Dashboard** - Donation tracking and impact metrics
+- ✅ **All Public Pages** - Full transparency access
+- ✅ **Impact Tracking** - Real-time donation effectiveness
+- ✅ **Tax Documentation** - Receipt and record generation
+- ✅ **Transparency Reports** - Detailed fund usage reports
 
-**Key Components:**
-- Data verification queue
-- Price management interface
-- System validation tools
-- Data quality metrics
+### **🌐 Public Pages** (Accessible to Everyone)
+- **🏠 Home**: `/` - Welcome page and platform overview
+- **🔍 Transparency Portal**: `/transparency` - Public spending and transaction reports
+- **🏚️ Disaster Details**: `/disaster/:id` - Public disaster zone information
+- **📸 Proof Gallery**: `/proof-gallery` - Public aid verification gallery
+- **📊 Real-time Stats** - Public donation and impact metrics
 
-### **🏪 Vendor Portal**
-**Route**: `/vendor` | **Access Level**: Level 5
+### **🔒 Authentication Pages** (No Role Required)
+- **🔑 Login**: `/login` - Email/password and Web3 wallet authentication
+- **📝 Register**: `/register` - Create new account with role selection
+- **🔄 Dashboard Router**: `/dashboard` - Automatic role-based redirection
 
-**Features:**
-- Voucher processing and redemption
-- Inventory management system
-- Transaction history and analytics
-- Customer service tools
-- Performance tracking dashboard
-
-**Key Components:**
-- Voucher redemption interface
-- Inventory management system
-- Transaction processing tools
-- Performance analytics
-
-### **👥 Victim/Beneficiary Portal**
-**Route**: `/victim` | **Access Level**: Level 4
-
-**Features:**
-- Voucher management and tracking
-- Aid request submission
-- Resource availability checking
-- Personal relief history
-- Emergency assistance requests
-
-**Key Components:**
-- Voucher management interface
-- Aid request forms
-- Resource discovery tools
-- Personal assistance history
-
-### **💝 Donor Portal**
-**Route**: `/donor` | **Access Level**: Level 3
-
-**Features:**
-- Donation management and tracking
-- Impact metrics and transparency
-- Donation history and receipts
-- Charity recommendation engine
-- Tax documentation generation
-
-**Key Components:**
-- Donation interface
-- Impact tracking dashboard
-- Transparency portal
-- Donation history
+### **🚦 Access Control Rules**
+1. **Higher roles can access lower-level dashboards** for oversight
+2. **All authenticated users can access public pages**
+3. **Unauthenticated users limited to public pages and auth forms**
+4. **Role-based UI elements** hide/show based on permissions
+5. **Automatic dashboard redirection** based on user's primary role
 
 ---
 
@@ -845,10 +823,14 @@ POST /api/auth/demo-login/donor
 - **Resource Locator**: Find nearby approved vendors
 
 ### 💝 Donor Dashboard (`/donate`)
-- **Donation Interface**: Easy-to-use donation portal
-- **Impact Tracking**: Real-time donation impact metrics
-- **Transparency Reports**: Detailed fund usage reports
-- **Tax Documentation**: Donation receipts and records
+- **Quick Donate System**: One-click donations with preset amounts ($25-$1000)
+- **Smart Targeting**: Auto-donate to most urgent disasters or choose specific ones
+- **Custom Amount Support**: Flexible donation amounts with instant impact preview
+- **Donation Interface**: Comprehensive donation portal with detailed transaction info
+- **Impact Tracking**: Real-time donation impact metrics and effectiveness reports
+- **Transparency Reports**: Detailed fund usage reports with blockchain verification
+- **Tax Documentation**: Automatic donation receipts and records generation
+- **Lightning Fast Donations**: Quick donate buttons on each disaster card
 ---
 
 ## 🌐 API Endpoints

@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
-  Eye, 
   BarChart3, 
-  Globe, 
   Activity,
   DollarSign,
   Users,
   TrendingUp,
   MapPin,
-  Clock,
   Search,
-  Filter,
   Download,
   ExternalLink
 } from 'lucide-react'
@@ -142,11 +138,11 @@ const TransparencyPortal = () => {
 
   if (loading) {
     return (
-      <Layout>
+      <div className="min-h-screen bg-gray-50">
         <div className="flex items-center justify-center min-h-screen">
           <LoadingSpinner size="lg" text="Loading transparency data..." />
         </div>
-      </Layout>
+      </div>
     )
   }
 
@@ -172,6 +168,7 @@ const TransparencyPortal = () => {
             </div>
           </Card>
         </div>
+        
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -188,7 +185,8 @@ const TransparencyPortal = () => {
                 <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
                 <span>Live Updates</span>
               </div>
-              <Button variant="outline" icon={Download} className="border-red-500 text-red-600 hover:bg-red-100 hover:text-red-700">
+              <Button variant="outline" className="border-red-500 text-red-600 hover:bg-red-100 hover:text-red-700">
+                <Download className="w-4 h-4 mr-2" />
                 Export Data
               </Button>
             </div>
