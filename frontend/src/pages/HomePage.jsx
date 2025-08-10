@@ -79,7 +79,7 @@ const HomePage = () => {
       distributed: '$98,000',
       beneficiaries: 2500,
       status: 'active',
-      image: '/disaster-1.jpg'
+      image: 'https://forward.com/wp-content/uploads/2023/02/GettyImages-1246848248.jpeg'
     },
     {
       id: 2,
@@ -89,7 +89,7 @@ const HomePage = () => {
       distributed: '$75,200',
       beneficiaries: 1800,
       status: 'active',
-      image: '/disaster-2.jpg'
+      image: 'https://imagesvs.oneindia.com/img/2023/12/chennai-floods-small-1701933535.jpg'
     },
     {
       id: 3,
@@ -99,7 +99,7 @@ const HomePage = () => {
       distributed: '$156,000',
       beneficiaries: 3200,
       status: 'completed',
-      image: '/disaster-3.jpg'
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS97yLCkYtLMx3pMfG4KAOd6luNbIk-YYQejg&s'
     }
   ]
 

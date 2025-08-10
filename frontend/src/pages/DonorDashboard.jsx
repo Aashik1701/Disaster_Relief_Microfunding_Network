@@ -236,7 +236,7 @@ const DonorDashboard = () => {
             <div className="flex items-center space-x-2">
               <Filter className="h-5 w-5 text-gray-400" />
               <select
-                className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-avalanche-500 focus:border-transparent"
+                className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-avalanche-500 focus:border-transparent bg-white text-gray-900"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
