@@ -77,7 +77,11 @@ const ROLE_PERMISSIONS = {
     'analytics:donation'
   ],
   guest: [
-    'public:view'
+    'public:view',
+    'donation:make', // Allow guests to make donations
+    'transparency:view', // Allow viewing transparency portal
+    'disaster:view', // Allow viewing disaster information
+    'proof:view' // Allow viewing proof gallery
   ]
 };
 
@@ -126,17 +130,19 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated(true);
             setAuthMethod('traditional');
           } else {
-            // Token invalid, clear storage
+            // Token invalid, clear storage but continue as guest
             localStorage.removeItem('authToken');
             localStorage.removeItem('userData');
             apiService.setAuthToken(null);
+            setGuestUser();
           }
         } catch (error) {
           console.warn('Token verification failed:', error);
-          // Clear invalid auth
+          // Clear invalid auth but continue as guest
           localStorage.removeItem('authToken');
           localStorage.removeItem('userData');
           apiService.setAuthToken(null);
+          setGuestUser();
         }
       } else if (isConnected && account && web3Role) {
         // Web3 authentication - check if user exists in database
@@ -203,21 +209,32 @@ export const AuthProvider = ({ children }) => {
           setAuthMethod('wallet');
         }
       } else {
-        // No authentication
-        setUser(null);
-        setIsAuthenticated(false);
-        setAuthMethod(null);
-        apiService.setAuthToken(null);
+        // No authentication - set as guest user with basic permissions
+        setGuestUser();
       }
     } catch (error) {
       console.error('Auth initialization error:', error);
-      setUser(null);
-      setIsAuthenticated(false);
-      setAuthMethod(null);
-      apiService.setAuthToken(null);
+      // On any error, default to guest access
+      setGuestUser();
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Helper function to set guest user with basic permissions
+  const setGuestUser = () => {
+    const guestUser = {
+      id: 'guest',
+      role: 'guest',
+      name: 'Guest User',
+      authMethod: 'guest',
+      permissions: ROLE_PERMISSIONS.guest || ['public:view'],
+      verified: false
+    };
+    setUser(guestUser);
+    setIsAuthenticated(false); // Keep false for guest to allow optional login
+    setAuthMethod('guest');
+    apiService.setAuthToken(null);
   };
 
   const login = async (credentials) => {
@@ -353,8 +370,11 @@ export const AuthProvider = ({ children }) => {
     return userLevel >= requiredLevel;
   };
 
-  const canAccess = (requiredPermissions = [], requiredRoles = []) => {
-    if (!user) return false;
+  const canAccess = (requiredPermissions = [], requiredRoles = [], allowGuest = false) => {
+    // Allow guest access if specified
+    if (allowGuest && user?.role === 'guest') return true;
+    
+    if (!user) return allowGuest;
 
     // Check permissions
     if (requiredPermissions.length > 0) {
@@ -373,9 +393,9 @@ export const AuthProvider = ({ children }) => {
     return true;
   };
 
-  // Role-based navigation
+  // Role-based navigation with guest fallback
   const getDashboardRoute = () => {
-    if (!user) return '/login';
+    if (!user || user.role === 'guest') return '/';
     
     const dashboardRoutes = {
       admin: '/admin',
@@ -384,7 +404,7 @@ export const AuthProvider = ({ children }) => {
       oracle: '/oracle',
       vendor: '/vendor',
       victim: '/victim',
-      donor: '/donate',
+      donor: '/donor',
       guest: '/'
     };
 

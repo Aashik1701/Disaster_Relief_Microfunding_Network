@@ -5,28 +5,27 @@ import { Toaster } from 'react-hot-toast'
 import Layout from './components/Layout/Layout'
 import LoadingSpinner from './components/UI/LoadingSpinner'
 import WalletDebugger from './components/Web3/WalletDebugger'
-import ProtectedRoute from './components/Auth/ProtectedRoute'
 import { AuthProvider } from './contexts/AuthContext'
 import { useWeb3Store } from './store/web3Store'
 
-// Lazy load pages for better performance
+// Public pages
 const HomePage = lazy(() => import('./pages/HomePage'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
-const DonorDashboard = lazy(() => import('./pages/DonorDashboard'))
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
-const GovernmentDashboard = lazy(() => import('./pages/GovernmentDashboard'))
-const TreasuryDashboard = lazy(() => import('./pages/TreasuryDashboard'))
-const OracleDashboard = lazy(() => import('./pages/OracleDashboard'))
-const VictimPortal = lazy(() => import('./pages/VictimPortal'))
-const VendorPortal = lazy(() => import('./pages/VendorPortal'))
 const TransparencyPortal = lazy(() => import('./pages/TransparencyPortal'))
 const DisasterDetails = lazy(() => import('./pages/DisasterDetails'))
 const ProofGallery = lazy(() => import('./pages/ProofGallery'))
 const APITestPage = lazy(() => import('./pages/APITestPage'))
 
-// Import role-based router
-const RoleBasedRouter = lazy(() => import('./components/Auth/RoleBasedRouter'))
+// Role-based route groups
+const AdminRoutes = lazy(() => import('./routes/AdminRoutes'))
+const VendorRoutes = lazy(() => import('./routes/VendorRoutes'))
+const VictimRoutes = lazy(() => import('./routes/VictimRoutes'))
+const DonorRoutes = lazy(() => import('./routes/DonorRoutes'))
+const GovernmentRoutes = lazy(() => import('./routes/GovernmentRoutes'))
+
+// Simple role-based redirect component
+const DashboardRedirect = lazy(() => import('./components/Auth/DashboardRedirect'))
 
 function App() {
   const { isInitialized, initialize } = useWeb3Store()
@@ -77,134 +76,31 @@ function App() {
           }
         >
           <Routes>
-            {/* Public Routes without Layout */}
+            {/* Public Routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             
-            {/* Protected Routes with Layout */}
-            {/* Public pages accessible to all users */}
-            <Route path="/" element={
-              <Layout>
-                <HomePage />
-              </Layout>
-            } />
-            <Route path="/transparency" element={
-              <Layout>
-                <TransparencyPortal />
-              </Layout>
-            } />
-            <Route path="/disaster/:id" element={
-              <Layout>
-                <DisasterDetails />
-              </Layout>
-            } />
-            <Route path="/proof-gallery" element={
-              <Layout>
-                <ProofGallery />
-              </Layout>
-            } />
+            {/* Public Pages with Layout */}
+            <Route path="/" element={<Layout><HomePage /></Layout>} />
+            <Route path="/transparency" element={<Layout><TransparencyPortal /></Layout>} />
+            <Route path="/disaster/:id" element={<Layout><DisasterDetails /></Layout>} />
+            <Route path="/proof-gallery" element={<Layout><ProofGallery /></Layout>} />
             
-            {/* API Test Page - Development only */}
+            {/* API Test - Development only */}
             {import.meta.env.DEV && (
-              <Route path="/api-test" element={
-                <Layout>
-                  <APITestPage />
-                </Layout>
-              } />
+              <Route path="/api-test" element={<Layout><APITestPage /></Layout>} />
             )}
             
-            {/* Role-based Protected Routes */}
+            {/* Role-based Route Groups */}
+            <Route path="/admin/*" element={<AdminRoutes />} />
+            <Route path="/vendor/*" element={<VendorRoutes />} />
+            <Route path="/victim/*" element={<VictimRoutes />} />
+            <Route path="/donor/*" element={<DonorRoutes />} />
+            <Route path="/government/*" element={<GovernmentRoutes />} />
             
-            {/* Admin Dashboard - Admin role required */}
-            <Route 
-              path="/admin" 
-              element={
-                <Layout>
-                  <ProtectedRoute requiredRoles={['admin']}>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                </Layout>
-              } 
-            />
-            
-            {/* Government Dashboard - Government role required */}
-            <Route 
-              path="/government" 
-              element={
-                <Layout>
-                  <ProtectedRoute requiredRoles={['government']}>
-                    <GovernmentDashboard />
-                  </ProtectedRoute>
-                </Layout>
-              } 
-            />
-            
-            {/* Treasury Dashboard - Treasury role required */}
-            <Route 
-              path="/treasury" 
-              element={
-                <Layout>
-                  <ProtectedRoute requiredRoles={['treasury']}>
-                    <TreasuryDashboard />
-                  </ProtectedRoute>
-                </Layout>
-              } 
-            />
-            
-            {/* Oracle Dashboard - Oracle role required */}
-            <Route 
-              path="/oracle" 
-              element={
-                <Layout>
-                  <ProtectedRoute requiredRoles={['oracle']}>
-                    <OracleDashboard />
-                  </ProtectedRoute>
-                </Layout>
-              } 
-            />
-            
-            {/* Vendor Portal - Vendor role required */}
-            <Route 
-              path="/vendor" 
-              element={
-                <Layout>
-                  <ProtectedRoute requiredRoles={['vendor']}>
-                    <VendorPortal />
-                  </ProtectedRoute>
-                </Layout>
-              } 
-            />
-            
-            {/* Victim Portal - Victim role required */}
-            <Route 
-              path="/victim" 
-              element={
-                <Layout>
-                  <ProtectedRoute requiredRoles={['victim']}>
-                    <VictimPortal />
-                  </ProtectedRoute>
-                </Layout>
-              } 
-            />
-            
-            {/* Donor Dashboard - Donor role or authenticated user */}
-            <Route 
-              path="/donate" 
-              element={
-                <Layout>
-                  <ProtectedRoute requireAuth={true}>
-                    <DonorDashboard />
-                  </ProtectedRoute>
-                </Layout>
-              } 
-            />
-            
-            {/* Dashboard redirect based on role */}
-            <Route path="/dashboard" element={
-              <Layout>
-                <RoleBasedRouter />
-              </Layout>
-            } />
+            {/* Legacy route redirects for backward compatibility */}
+            <Route path="/donate" element={<Navigate to="/donor" replace />} />
+            <Route path="/dashboard" element={<DashboardRedirect />} />
             
             {/* 404 Page */}
             <Route path="*" element={
