@@ -130,5 +130,17 @@ export const CONTRACT_HELPERS = {
       CONTRACT_HELPERS.parseCoordinates(zoneLat, zoneLng).longitude
     );
     return distance <= radius;
+  },
+
+  // Utility: parse BigInt or BigNumber to number safely
+  toNumber: (v) => {
+    try {
+      if (typeof v === 'bigint') return Number(v);
+      if (typeof v === 'string') return Number(v);
+      if (v && typeof v.toString === 'function') return Number(v.toString());
+      return Number(v);
+    } catch {
+      return 0;
+    }
   }
 };

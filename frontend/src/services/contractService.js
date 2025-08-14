@@ -13,6 +13,11 @@ export class DisasterReliefContractService {
     this.disasterReliefContract = null;
     this.usdcContract = null;
     this.initialized = false;
+    this.txCallbacks = {
+      onSubmitted: null, // ({hash,label}) => void
+      onMined: null,     // ({hash, receipt, label}) => void
+      onError: null      // ({error, label}) => void
+    };
   }
 
   /**
@@ -78,6 +83,94 @@ export class DisasterReliefContractService {
     }
   }
 
+  /**
+   * Register callbacks for tx lifecycle
+   */
+  setTxCallbacks(callbacks = {}) {
+    this.txCallbacks = { ...this.txCallbacks, ...callbacks };
+  }
+
+  // =============================================
+  // INTERNAL HELPERS
+  // =============================================
+
+  /**
+   * Build gas overrides with estimate and EIP-1559 fee data
+   */
+  async getGasOverrides(contract, method, args = []) {
+    try {
+      const feeData = await this.provider.getFeeData();
+      let overrides = {};
+
+      // Gas limit with 20% buffer
+      if (contract?.estimateGas?.[method]) {
+        try {
+          const estimate = await contract.estimateGas[method](...args);
+          // estimate is a bigint in ethers v6
+          const buffered = (estimate * 120n) / 100n;
+          overrides.gasLimit = buffered;
+        } catch (e) {
+          // Estimation may fail if call would revert; skip gasLimit
+          console.warn(`Gas estimation failed for ${method}:`, e?.message || e);
+        }
+      }
+
+      // Apply fee data if available
+      if (feeData?.maxFeePerGas) overrides.maxFeePerGas = feeData.maxFeePerGas;
+      if (feeData?.maxPriorityFeePerGas) overrides.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
+
+      return overrides;
+    } catch (error) {
+      console.warn('Failed to compute gas overrides:', error?.message || error);
+      return {};
+    }
+  }
+
+  /**
+   * Normalize/parse ethers errors into user-friendly messages
+   */
+  parseEthersError(error) {
+    const raw = error?.shortMessage || error?.message || String(error);
+    const code = error?.code || error?.info?.error?.code;
+
+    if (code === 4001 || /user rejected/i.test(raw)) return 'User rejected the transaction';
+    if (/insufficient funds/i.test(raw)) return 'Insufficient funds for gas or value';
+    if (/nonce (too low|has already been used)/i.test(raw)) return 'Transaction nonce issue. Please try again';
+    if (/replacement transaction underpriced/i.test(raw)) return 'Replacement transaction underpriced';
+    if (/execution reverted/i.test(raw)) {
+      // Try extracting revert reason
+      const m = raw.match(/reverted:\s?(.*)$/i);
+      return m?.[1] ? `Reverted: ${m[1]}` : 'Transaction reverted by EVM';
+    }
+    return raw;
+  }
+
+  /**
+   * Execute a contract write with monitoring and toasts
+   */
+  async execute(contract, method, args = [], label = 'Transaction') {
+    if (!contract || !method) throw new Error('Invalid contract call');
+    try {
+      const overrides = await this.getGasOverrides(contract, method, args);
+      // Submit tx
+      const tx = await contract[method](...args, overrides);
+      toast.loading(`${label}: submitting...`, { id: tx.hash });
+      if (this.txCallbacks.onSubmitted) this.txCallbacks.onSubmitted({ hash: tx.hash, label });
+
+      // Wait for 1 confirmation
+      const receipt = await tx.wait(1);
+      toast.success(`${label}: confirmed`, { id: tx.hash });
+      if (this.txCallbacks.onMined) this.txCallbacks.onMined({ hash: tx.hash, receipt, label });
+
+      return { tx, receipt };
+    } catch (error) {
+      const msg = this.parseEthersError(error);
+      toast.error(`${label}: ${msg}`);
+      if (this.txCallbacks.onError) this.txCallbacks.onError({ error: msg, label });
+      throw error;
+    }
+  }
+
   // =============================================
   // DISASTER ZONE MANAGEMENT
   // =============================================
@@ -92,16 +185,12 @@ export class DisasterReliefContractService {
       const coords = CONTRACT_HELPERS.formatCoordinates(latitude, longitude);
       const radiusMeters = radiusKm * 1000;
       const fundingAmount = CONTRACT_HELPERS.formatUSDCAmount(initialFundingUSDC);
-
-      const tx = await this.disasterReliefContract.createDisasterZone(
-        name,
-        coords.latitude,
-        coords.longitude,
-        radiusMeters,
-        fundingAmount
+      const { tx, receipt } = await this.execute(
+        this.disasterReliefContract,
+        'createDisasterZone',
+        [name, coords.latitude, coords.longitude, radiusMeters, fundingAmount],
+        `Create disaster zone "${name}"`
       );
-
-      const receipt = await tx.wait();
       
       // Extract zone ID from events
       const event = receipt.logs.find(log => {
@@ -117,7 +206,6 @@ export class DisasterReliefContractService {
         this.disasterReliefContract.interface.parseLog(event).args.zoneId :
         null;
 
-      toast.success(`Disaster zone "${name}" created successfully!`);
       return { 
         success: true, 
         txHash: tx.hash, 
@@ -125,7 +213,6 @@ export class DisasterReliefContractService {
       };
     } catch (error) {
       console.error('Error creating disaster zone:', error);
-      toast.error('Failed to create disaster zone');
       throw error;
     }
   }
@@ -188,14 +275,15 @@ export class DisasterReliefContractService {
     
     try {
       const amount = CONTRACT_HELPERS.formatUSDCAmount(amountUSDC);
-      const tx = await this.disasterReliefContract.addFunding(zoneId, amount);
-      await tx.wait();
-      
-      toast.success(`Added $${amountUSDC} USDC to disaster zone`);
+      const { tx } = await this.execute(
+        this.disasterReliefContract,
+        'addFunding',
+        [zoneId, amount],
+        `Add $${amountUSDC} USDC to zone ${zoneId}`
+      );
       return { success: true, txHash: tx.hash };
     } catch (error) {
       console.error('Error adding funding:', error);
-      toast.error('Failed to add funding');
       throw error;
     }
   }
@@ -211,20 +299,15 @@ export class DisasterReliefContractService {
     this.ensureInitialized();
     
     try {
-      const tx = await this.disasterReliefContract.registerVendor(
-        vendorAddress,
-        name,
-        location,
-        zoneId,
-        ipfsKycHash
+      const { tx } = await this.execute(
+        this.disasterReliefContract,
+        'registerVendor',
+        [vendorAddress, name, location, zoneId, ipfsKycHash],
+        `Register vendor "${name}"`
       );
-      await tx.wait();
-      
-      toast.success(`Vendor "${name}" registered successfully`);
       return { success: true, txHash: tx.hash };
     } catch (error) {
       console.error('Error registering vendor:', error);
-      toast.error('Failed to register vendor');
       throw error;
     }
   }
@@ -236,14 +319,15 @@ export class DisasterReliefContractService {
     this.ensureInitialized();
     
     try {
-      const tx = await this.disasterReliefContract.verifyVendor(vendorAddress, zoneId);
-      await tx.wait();
-      
-      toast.success('Vendor verified successfully');
+      const { tx } = await this.execute(
+        this.disasterReliefContract,
+        'verifyVendor',
+        [vendorAddress, zoneId],
+        'Verify vendor'
+      );
       return { success: true, txHash: tx.hash };
     } catch (error) {
       console.error('Error verifying vendor:', error);
-      toast.error('Failed to verify vendor');
       throw error;
     }
   }
@@ -307,15 +391,12 @@ export class DisasterReliefContractService {
     
     try {
       const amount = CONTRACT_HELPERS.formatUSDCAmount(amountUSDC);
-      const tx = await this.disasterReliefContract.issueVoucher(
-        beneficiaryAddress,
-        amount,
-        zoneId,
-        categories,
-        expiryDays
+      const { tx, receipt } = await this.execute(
+        this.disasterReliefContract,
+        'issueVoucher',
+        [beneficiaryAddress, amount, zoneId, categories, expiryDays],
+        `Issue voucher to ${beneficiaryAddress}`
       );
-      
-      const receipt = await tx.wait();
       
       // Extract voucher ID from events
       const event = receipt.logs.find(log => {
@@ -331,7 +412,6 @@ export class DisasterReliefContractService {
         this.disasterReliefContract.interface.parseLog(event).args.voucherId :
         null;
 
-      toast.success(`Voucher issued successfully (ID: ${voucherId})`);
       return { 
         success: true, 
         txHash: tx.hash, 
@@ -339,7 +419,6 @@ export class DisasterReliefContractService {
       };
     } catch (error) {
       console.error('Error issuing voucher:', error);
-      toast.error('Failed to issue voucher');
       throw error;
     }
   }
@@ -352,19 +431,15 @@ export class DisasterReliefContractService {
     
     try {
       const amount = CONTRACT_HELPERS.formatUSDCAmount(amountUSDC);
-      const tx = await this.disasterReliefContract.redeemVoucher(
-        voucherId,
-        amount,
-        category,
-        ipfsHash
+      const { tx } = await this.execute(
+        this.disasterReliefContract,
+        'redeemVoucher',
+        [voucherId, amount, category, ipfsHash],
+        `Redeem voucher #${voucherId}`
       );
-      await tx.wait();
-      
-      toast.success(`Voucher ${voucherId} redeemed successfully`);
       return { success: true, txHash: tx.hash };
     } catch (error) {
       console.error('Error redeeming voucher:', error);
-      toast.error('Failed to redeem voucher');
       throw error;
     }
   }
@@ -442,14 +517,15 @@ export class DisasterReliefContractService {
     if (!this.usdcContract) throw new Error('USDC contract not available');
     
     try {
-      const tx = await this.usdcContract.faucet();
-      await tx.wait();
-      
-      toast.success('Received 1000 USDC from faucet');
+      const { tx } = await this.execute(
+        this.usdcContract,
+        'faucet',
+        [],
+        'Use USDC faucet'
+      );
       return { success: true, txHash: tx.hash };
     } catch (error) {
       console.error('Error using faucet:', error);
-      toast.error('Failed to use faucet');
       throw error;
     }
   }
@@ -462,14 +538,15 @@ export class DisasterReliefContractService {
     
     try {
       const amount = CONTRACT_HELPERS.formatUSDCAmount(amountUSDC);
-      const tx = await this.usdcContract.transfer(to, amount);
-      await tx.wait();
-      
-      toast.success(`Transferred ${amountUSDC} USDC successfully`);
+      const { tx } = await this.execute(
+        this.usdcContract,
+        'transfer',
+        [to, amount],
+        `Transfer ${amountUSDC} USDC`
+      );
       return { success: true, txHash: tx.hash };
     } catch (error) {
       console.error('Error transferring USDC:', error);
-      toast.error('Failed to transfer USDC');
       throw error;
     }
   }

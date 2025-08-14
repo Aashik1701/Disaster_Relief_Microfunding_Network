@@ -159,6 +159,25 @@ export const useWeb3Store = create((set, get) => ({
       try {
         console.log('Initializing contract service...')
         contractService = new DisasterReliefContractService(provider, signer)
+        // Setup tx lifecycle callbacks for global monitoring
+        contractService.setTxCallbacks({
+          onSubmitted: ({ hash, label }) => {
+            console.log(`${label} submitted:`, hash)
+          },
+          onMined: async ({ hash, label }) => {
+            console.log(`${label} confirmed:`, hash)
+            // Auto-refresh balances and vouchers post tx
+            try {
+              await get().updateBalance()
+              await get().refreshVouchers()
+            } catch (e) {
+              console.warn('Post-tx refresh failed:', e)
+            }
+          },
+          onError: ({ error, label }) => {
+            console.warn(`${label} error:`, error)
+          }
+        })
         await contractService.initialize()
         console.log('Contract service initialized successfully')
 
@@ -462,9 +481,25 @@ export const useWeb3Store = create((set, get) => ({
     if (!contractService) return
 
     try {
-      // Get all disaster zones (this would need to be implemented based on events or contract methods)
-      // For now, we'll set up the structure
-      set({ disasterZones: [] })
+      const contract = contractService.disasterReliefContract
+      const zones = []
+      if (contract?.disasterZoneCounter) {
+        try {
+          const count = await contract.disasterZoneCounter()
+          const total = Number(count)
+          for (let i = 1; i <= total; i++) {
+            try {
+              const z = await contractService.getDisasterZone(i)
+              zones.push(z)
+            } catch (e) {
+              // Skip missing/deleted zones
+            }
+          }
+        } catch (e) {
+          console.warn('Failed to enumerate disaster zones:', e)
+        }
+      }
+      set({ disasterZones: zones })
     } catch (error) {
       console.error('Error refreshing disaster zones:', error)
     }

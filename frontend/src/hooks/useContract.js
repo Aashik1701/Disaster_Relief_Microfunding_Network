@@ -60,8 +60,10 @@ export const useContract = () => {
       
       return result;
     } catch (error) {
-      console.error('Create disaster zone failed:', error);
-      return { success: false, error: error.message };
+      const message = error?.shortMessage || error?.message || 'Unknown error';
+      console.error('Create disaster zone failed:', message);
+      toast.error(message);
+      return { success: false, error: message };
     }
   }, [isConnected, userRole, createDisasterZone, refreshDisasterZones]);
 
@@ -91,7 +93,7 @@ export const useContract = () => {
       throw new Error('Contract service not available');
     }
 
-    try {
+  try {
       const result = await contractService.addFunding(zoneId, amountUSDC);
       
       if (result.success) {
@@ -101,8 +103,10 @@ export const useContract = () => {
       
       return result;
     } catch (error) {
-      console.error('Add funding failed:', error);
-      return { success: false, error: error.message };
+  const message = error?.shortMessage || error?.message || 'Unknown error';
+  console.error('Add funding failed:', message);
+  toast.error(message);
+  return { success: false, error: message };
     }
   }, [isConnected, contractService, updateBalance, refreshDisasterZones]);
 
@@ -121,7 +125,7 @@ export const useContract = () => {
       return { success: false };
     }
 
-    try {
+  try {
       const result = await registerVendor(
         vendorData.vendorAddress,
         vendorData.name,
@@ -136,8 +140,10 @@ export const useContract = () => {
       
       return result;
     } catch (error) {
-      console.error('Register vendor failed:', error);
-      return { success: false, error: error.message };
+  const message = error?.shortMessage || error?.message || 'Unknown error';
+  console.error('Register vendor failed:', message);
+  toast.error(message);
+  return { success: false, error: message };
     }
   }, [isConnected, userRole, registerVendor, refreshVendors]);
 
@@ -152,7 +158,7 @@ export const useContract = () => {
       return { success: false };
     }
 
-    try {
+  try {
       const result = await verifyVendor(vendorAddress, zoneId);
       
       if (result.success) {
@@ -161,8 +167,10 @@ export const useContract = () => {
       
       return result;
     } catch (error) {
-      console.error('Verify vendor failed:', error);
-      return { success: false, error: error.message };
+  const message = error?.shortMessage || error?.message || 'Unknown error';
+  console.error('Verify vendor failed:', message);
+  toast.error(message);
+  return { success: false, error: message };
     }
   }, [isConnected, userRole, verifyVendor, refreshVendors]);
 
@@ -197,7 +205,7 @@ export const useContract = () => {
       return { success: false };
     }
 
-    try {
+  try {
       const result = await issueVoucher(
         voucherData.beneficiaryAddress,
         voucherData.amountUSDC,
@@ -212,8 +220,10 @@ export const useContract = () => {
       
       return result;
     } catch (error) {
-      console.error('Issue voucher failed:', error);
-      return { success: false, error: error.message };
+  const message = error?.shortMessage || error?.message || 'Unknown error';
+  console.error('Issue voucher failed:', message);
+  toast.error(message);
+  return { success: false, error: message };
     }
   }, [isConnected, userRole, issueVoucher, refreshVouchers]);
 
@@ -228,7 +238,7 @@ export const useContract = () => {
       return { success: false };
     }
 
-    try {
+  try {
       const result = await redeemVoucher(
         voucherData.voucherId,
         voucherData.amountUSDC,
@@ -243,8 +253,10 @@ export const useContract = () => {
       
       return result;
     } catch (error) {
-      console.error('Redeem voucher failed:', error);
-      return { success: false, error: error.message };
+  const message = error?.shortMessage || error?.message || 'Unknown error';
+  console.error('Redeem voucher failed:', message);
+  toast.error(message);
+  return { success: false, error: message };
     }
   }, [isConnected, userRole, redeemVoucher, refreshVouchers, updateBalance]);
 
@@ -286,8 +298,10 @@ export const useContract = () => {
       const result = await useFaucet();
       return result;
     } catch (error) {
-      console.error('Use faucet failed:', error);
-      return { success: false, error: error.message };
+      const message = error?.shortMessage || error?.message || 'Unknown error';
+      console.error('Use faucet failed:', message);
+      toast.error(message);
+      return { success: false, error: message };
     }
   }, [isConnected, useFaucet]);
 
@@ -301,8 +315,10 @@ export const useContract = () => {
       const result = await transferUSDC(to, amountUSDC);
       return result;
     } catch (error) {
-      console.error('Transfer USDC failed:', error);
-      return { success: false, error: error.message };
+      const message = error?.shortMessage || error?.message || 'Unknown error';
+      console.error('Transfer USDC failed:', message);
+      toast.error(message);
+      return { success: false, error: message };
     }
   }, [isConnected, transferUSDC]);
 
