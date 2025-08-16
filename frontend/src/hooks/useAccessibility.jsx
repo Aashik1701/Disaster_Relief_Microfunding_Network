@@ -1,5 +1,4 @@
-;
-
+import React from 'react';
 /**
  * Custom hooks for accessibility features
  */
@@ -222,7 +221,7 @@ export const useSkipLinks = () => {
       <a
         key={id}
         href={`#${id}`}
-        className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50"
+        className="z-50 p-2 text-white bg-blue-600 sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0"
         onFocus={(e) => e.target.scrollIntoView()}
       >
         {label}

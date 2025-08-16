@@ -48,9 +48,9 @@ const WalletDebugger = () => {
   }, [isOpen, isConnected, account, chainId])
 
   const StatusIcon = ({ condition }) => {
-    if (condition === true) return <CheckCircle className="h-4 w-4 text-green-500" />
-    if (condition === false) return <XCircle className="h-4 w-4 text-red-500" />
-    return <AlertTriangle className="h-4 w-4 text-yellow-500" />
+    if (condition === true) return <CheckCircle className="w-4 h-4 text-green-500" />
+    if (condition === false) return <XCircle className="w-4 h-4 text-red-500" />
+    return <AlertTriangle className="w-4 h-4 text-yellow-500" />
   }
 
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'production') {
@@ -64,10 +64,10 @@ const WalletDebugger = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-4 left-4 p-3 bg-gray-900 text-white rounded-full shadow-lg hover:bg-gray-800 transition-colors z-50"
+        className="fixed z-50 p-3 text-white transition-colors bg-gray-900 rounded-full shadow-lg bottom-4 left-4 hover:bg-gray-800"
         title="Open Wallet Debugger"
       >
-        <Bug className="h-5 w-5" />
+        <Bug className="w-5 h-5" />
       </motion.button>
 
       {/* Debug Panel */}
@@ -76,7 +76,7 @@ const WalletDebugger = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="fixed bottom-20 left-4 w-96 bg-white border border-gray-300 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto"
+          className="fixed z-50 overflow-y-auto bg-white border border-gray-300 rounded-lg shadow-xl bottom-20 left-4 w-96 max-h-96"
         >
           <div className="p-4">
             <div className="flex items-center justify-between mb-4">
@@ -87,7 +87,7 @@ const WalletDebugger = () => {
                   className="p-1 text-gray-500 hover:text-gray-700"
                   title="Refresh"
                 >
-                  <RefreshCw className="h-4 w-4" />
+                  <RefreshCw className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
@@ -168,13 +168,13 @@ const WalletDebugger = () => {
               )}
 
               {debugInfo.error && (
-                <div className="p-2 bg-red-50 border border-red-200 rounded text-red-700 text-xs">
+                <div className="p-2 text-xs text-red-700 border border-red-200 rounded bg-red-50">
                   Error: {debugInfo.error}
                 </div>
               )}
 
               {debugInfo.timestamp && (
-                <div className="text-xs text-gray-500 pt-2 border-t">
+                <div className="pt-2 text-xs text-gray-500 border-t">
                   Last updated: {new Date(debugInfo.timestamp).toLocaleTimeString()}
                 </div>
               )}
