@@ -145,12 +145,12 @@ const Header = ({ onMenuClick }) => {
 
           {/* Center Section - Search (Hidden on mobile) */}
           <div className="flex-1 hidden max-w-md mx-8 md:flex">
-            <div className="w-full relative">
+            <div className="relative w-full">
               <Search className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
               <input
                 type="text"
                 placeholder="Search disasters, transactions..."
-                className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-avalanche-500 focus:border-transparent bg-white text-gray-900"
+                className="w-full py-2 pl-10 pr-4 text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-avalanche-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -161,7 +161,7 @@ const Header = ({ onMenuClick }) => {
             {isUserAuthenticated && (
               <Link
                 to={getDashboardLink()}
-                className="hidden sm:flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+                className="items-center hidden px-3 py-2 text-sm font-medium text-gray-700 transition-colors rounded-lg sm:flex hover:bg-gray-100"
               >
                 Dashboard
               </Link>
@@ -288,13 +288,13 @@ const Header = ({ onMenuClick }) => {
               <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-gray-700 transition-colors rounded-lg hover:bg-gray-100"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 text-sm font-medium text-white bg-avalanche-600 rounded-lg hover:bg-avalanche-700 transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg bg-avalanche-600 hover:bg-avalanche-700"
                 >
                   Register
                 </Link>
@@ -312,7 +312,7 @@ const Header = ({ onMenuClick }) => {
           <input
             type="text"
             placeholder="Search disasters, transactions..."
-            className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-avalanche-500 focus:border-transparent bg-white text-gray-900"
+            className="w-full py-2 pl-10 pr-4 text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-avalanche-500 focus:border-transparent"
           />
         </div>
       </div>

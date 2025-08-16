@@ -267,7 +267,7 @@ After setup, access different interfaces:
   ```
 
 ---
-
+<!-- 
 ## 📖 Documentation
 
 ### 🗂️ **Core Documentation**
@@ -279,7 +279,7 @@ After setup, access different interfaces:
 | [🔗 Avalanche Integration](./docs/AVAX-INTEGRATION-GUIDE.md) | Blockchain integration guide |
 | [🔑 API Keys Guide](./docs/API-KEYS-GUIDE.md) | External service configuration |
 | [🗃️ Database Setup](./docs/SUPABASE-SETUP.md) | Database configuration guide |
-| [📁 IPFS Integration](./docs/PINATA-INTEGRATION-GUIDE.md) | File storage setup |
+| [📁 IPFS Integration](./docs/PINATA-INTEGRATION-GUIDE.md) | File storage setup | -->
 
 ### 🔌 **API Documentation**
 
@@ -427,6 +427,16 @@ graph LR
     E --> F[Track Aid Received]
 ```
 
+### 🏪 **Vendor Workflow**
+```mermaid
+graph LR
+    A[KYC Registration] --> B[Admin Approval]
+    B --> C[Vendor Dashboard]
+    C --> D[Accept Voucher Payments]
+    D --> E[Provide Supplies]
+    E --> F[Submit Proof of Aid]
+    F --> G[Receive USDC Payment]
+```
 
 ### 💝 **Donor Workflow**
 ```mermaid
@@ -691,16 +701,7 @@ copies or substantial portions of the Software.
 - **Backend Development**: API design and database architecture
 - **DevOps**: Infrastructure setup and deployment automation
 
-### 💡 **Special Thanks**
-- **Avalanche Foundation**: For providing the robust blockchain infrastructure
-- **OpenZeppelin**: For secure smart contract libraries
-- **React Community**: For the excellent frontend framework ecosystem
-- **Humanitarian Organizations**: For insights into real-world relief challenges
-
----
-
 <div align="center">
-
 
 **🏔️ Built with ❤️ for the Avalanche Ecosystem**
 
@@ -708,7 +709,7 @@ copies or substantial portions of the Software.
 
 [![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/Aashik1701)
 [![Powered by Avalanche](https://img.shields.io/badge/Powered%20by-Avalanche-red.svg)](https://avax.network/)
-[![Built at Hackathon](https://img.shields.io/badge/Built%20at-Avalanche%20Hackathon-blue.svg)](https://avalanche-hackathon.devpost.com/)
+
 
 </div>
 

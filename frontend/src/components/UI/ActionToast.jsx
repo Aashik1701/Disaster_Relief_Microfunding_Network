@@ -61,7 +61,7 @@ const ActionToast = ({ message, action, onAction, onDismiss, severity = 'error' 
       </div>
       
       {action && onAction && (
-        <div className="mt-3 flex justify-end">
+        <div className="flex justify-end mt-3">
           <button
             onClick={() => {
               onAction();

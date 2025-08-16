@@ -34,28 +34,28 @@ const AdminVendors = () => {
           <h2 className="mb-4 text-2xl font-bold text-gray-900">
             Vendor Management System
           </h2>
-          <p className="mb-8 text-gray-600 max-w-2xl mx-auto">
+          <p className="max-w-2xl mx-auto mb-8 text-gray-600">
             This page will contain comprehensive vendor management features including 
             verification workflows, performance monitoring, and approval processes.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div className="p-6 bg-green-50 rounded-lg">
+          <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-4">
+            <div className="p-6 rounded-lg bg-green-50">
               <CheckCircle className="w-8 h-8 mx-auto mb-2 text-green-600" />
               <p className="text-2xl font-bold text-green-600">24</p>
               <p className="text-sm text-gray-600">Verified Vendors</p>
             </div>
-            <div className="p-6 bg-yellow-50 rounded-lg">
+            <div className="p-6 rounded-lg bg-yellow-50">
               <Clock className="w-8 h-8 mx-auto mb-2 text-yellow-600" />
               <p className="text-2xl font-bold text-yellow-600">3</p>
               <p className="text-sm text-gray-600">Pending Review</p>
             </div>
-            <div className="p-6 bg-red-50 rounded-lg">
+            <div className="p-6 rounded-lg bg-red-50">
               <XCircle className="w-8 h-8 mx-auto mb-2 text-red-600" />
               <p className="text-2xl font-bold text-red-600">2</p>
               <p className="text-sm text-gray-600">Rejected</p>
             </div>
-            <div className="p-6 bg-blue-50 rounded-lg">
+            <div className="p-6 rounded-lg bg-blue-50">
               <UserCheck className="w-8 h-8 mx-auto mb-2 text-blue-600" />
               <p className="text-2xl font-bold text-blue-600">29</p>
               <p className="text-sm text-gray-600">Total Applications</p>

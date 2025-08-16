@@ -7,7 +7,7 @@ import Button from '../../components/UI/Button'
 const VendorTransactions = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -40,9 +40,9 @@ const VendorTransactions = () => {
 
         {/* Transaction List */}
         <Card className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Transactions</h3>
-          <div className="text-center py-12">
-            <BarChart3 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">Recent Transactions</h3>
+          <div className="py-12 text-center">
+            <BarChart3 className="w-16 h-16 mx-auto mb-4 text-gray-400" />
             <p className="text-gray-600">Transaction history interface coming soon...</p>
           </div>
         </Card>

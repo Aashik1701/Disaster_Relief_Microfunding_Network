@@ -92,7 +92,7 @@ const Toast = ({
       <div className="flex items-start">
         <Icon className={`w-5 h-5 ${config.iconColor} mt-0.5 flex-shrink-0`} />
         
-        <div className="ml-3 flex-1">
+        <div className="flex-1 ml-3">
           {title && (
             <h4 className={`text-sm font-semibold ${config.textColor}`}>
               {title}
@@ -104,13 +104,13 @@ const Toast = ({
           </p>
 
           {showTimestamp && (
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="mt-1 text-xs text-gray-500">
               {new Date().toLocaleTimeString()}
             </p>
           )}
 
           {/* Action buttons */}
-          <div className="mt-3 flex items-center space-x-2">
+          <div className="flex items-center mt-3 space-x-2">
             {(action || onAction) && (
               <button
                 onClick={onAction || action}
@@ -151,7 +151,7 @@ const Toast = ({
       {/* Progress bar for non-persistent toasts */}
       {!persistent && duration > 0 && (
         <motion.div
-          className="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden"
+          className="h-1 mt-3 overflow-hidden bg-gray-200 rounded-full"
           initial={{ width: '100%' }}
           animate={{ width: '0%' }}
           transition={{ duration: duration / 1000, ease: 'linear' }}
@@ -166,7 +166,7 @@ const Toast = ({
 // Toast container component
 const ToastContainer = ({ toasts, onDismiss }) => {
   return (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
+    <div className="fixed z-50 space-y-2 top-4 right-4">
       <AnimatePresence>
         {toasts.map((toast) => (
           <Toast

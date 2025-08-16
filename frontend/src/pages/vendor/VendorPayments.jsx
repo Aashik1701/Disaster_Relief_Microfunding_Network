@@ -7,7 +7,7 @@ import Button from '../../components/UI/Button'
 const VendorPayments = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -22,11 +22,11 @@ const VendorPayments = () => {
         </div>
 
         {/* Payment Methods */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 gap-8 mb-8 md:grid-cols-2">
           <Card className="p-8 text-center">
-            <QrCode className="h-16 w-16 text-blue-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">QR Code Scanner</h3>
-            <p className="text-gray-600 mb-6">Scan victim voucher QR codes for instant processing</p>
+            <QrCode className="w-16 h-16 mx-auto mb-4 text-blue-500" />
+            <h3 className="mb-2 text-xl font-semibold text-gray-900">QR Code Scanner</h3>
+            <p className="mb-6 text-gray-600">Scan victim voucher QR codes for instant processing</p>
             <Button className="w-full bg-blue-600 hover:bg-blue-700">
               <Camera className="w-4 h-4 mr-2" />
               Open Scanner
@@ -34,9 +34,9 @@ const VendorPayments = () => {
           </Card>
 
           <Card className="p-8 text-center">
-            <CreditCard className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Manual Entry</h3>
-            <p className="text-gray-600 mb-6">Enter voucher details manually for processing</p>
+            <CreditCard className="w-16 h-16 mx-auto mb-4 text-green-500" />
+            <h3 className="mb-2 text-xl font-semibold text-gray-900">Manual Entry</h3>
+            <p className="mb-6 text-gray-600">Enter voucher details manually for processing</p>
             <Button variant="outline" className="w-full">
               Manual Processing
             </Button>
@@ -45,9 +45,9 @@ const VendorPayments = () => {
 
         {/* Pending Payments */}
         <Card className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Pending Payment Requests</h3>
-          <div className="text-center py-8">
-            <CreditCard className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">Pending Payment Requests</h3>
+          <div className="py-8 text-center">
+            <CreditCard className="w-12 h-12 mx-auto mb-4 text-gray-400" />
             <p className="text-gray-600">Payment processing interface coming soon...</p>
           </div>
         </Card>

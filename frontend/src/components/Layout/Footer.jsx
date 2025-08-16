@@ -46,18 +46,18 @@ const Footer = () => {
 
   return (
     <footer className="bg-white border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center mb-4">
-              <Mountain className="h-8 w-8 text-avalanche-500" />
+              <Mountain className="w-8 h-8 text-avalanche-500" />
               <span className="ml-2 text-lg font-bold text-gray-900">
                 Relief Network
               </span>
             </div>
-            <p className="text-gray-600 text-sm mb-4">
+            <p className="mb-4 text-sm text-gray-600">
               Transparent, efficient, and accountable disaster relief funding through blockchain technology.
             </p>
             <div className="flex space-x-4">
@@ -69,10 +69,10 @@ const Footer = () => {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
+                    className="text-gray-400 transition-colors duration-200 hover:text-gray-500"
                   >
                     <span className="sr-only">{item.name}</span>
-                    <Icon className="h-5 w-5" />
+                    <Icon className="w-5 h-5" />
                   </a>
                 )
               })}
@@ -81,7 +81,7 @@ const Footer = () => {
 
           {/* Product Links */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">
+            <h3 className="mb-4 text-sm font-semibold tracking-wider text-gray-900 uppercase">
               Product
             </h3>
             <ul className="space-y-3">
@@ -89,7 +89,7 @@ const Footer = () => {
                 <li key={item.name}>
                   <Link
                     to={item.href}
-                    className="text-gray-600 hover:text-gray-900 text-sm transition-colors duration-200"
+                    className="text-sm text-gray-600 transition-colors duration-200 hover:text-gray-900"
                   >
                     {item.name}
                   </Link>
@@ -100,7 +100,7 @@ const Footer = () => {
 
           {/* Support Links */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">
+            <h3 className="mb-4 text-sm font-semibold tracking-wider text-gray-900 uppercase">
               Support
             </h3>
             <ul className="space-y-3">
@@ -108,7 +108,7 @@ const Footer = () => {
                 <li key={item.name}>
                   <Link
                     to={item.href}
-                    className="text-gray-600 hover:text-gray-900 text-sm transition-colors duration-200"
+                    className="text-sm text-gray-600 transition-colors duration-200 hover:text-gray-900"
                   >
                     {item.name}
                   </Link>
@@ -119,7 +119,7 @@ const Footer = () => {
 
           {/* Legal Links */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">
+            <h3 className="mb-4 text-sm font-semibold tracking-wider text-gray-900 uppercase">
               Legal
             </h3>
             <ul className="space-y-3">
@@ -127,7 +127,7 @@ const Footer = () => {
                 <li key={item.name}>
                   <Link
                     to={item.href}
-                    className="text-gray-600 hover:text-gray-900 text-sm transition-colors duration-200"
+                    className="text-sm text-gray-600 transition-colors duration-200 hover:text-gray-900"
                   >
                     {item.name}
                   </Link>
@@ -138,8 +138,8 @@ const Footer = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="pt-8 mt-12 border-t border-gray-200">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-avalanche-600">$2.5M+</div>
               <div className="text-sm text-gray-600">Funds Distributed</div>
@@ -160,18 +160,18 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="pt-8 mt-12 border-t border-gray-200">
+          <div className="flex flex-col items-center justify-between md:flex-row">
             <div className="flex items-center text-sm text-gray-600">
               <span>© {currentYear} Avalanche Disaster Relief Network.</span>
               <span className="ml-1">Built with</span>
-              <Heart className="h-4 w-4 text-red-500 mx-1" fill="currentColor" />
+              <Heart className="w-4 h-4 mx-1 text-red-500" fill="currentColor" />
               <span>for humanitarian causes.</span>
             </div>
             
-            <div className="mt-4 md:mt-0 flex items-center space-x-6">
+            <div className="flex items-center mt-4 space-x-6 md:mt-0">
               <div className="flex items-center text-sm text-gray-600">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                <div className="w-2 h-2 mr-2 bg-green-500 rounded-full"></div>
                 <span>All systems operational</span>
               </div>
               <div className="text-sm text-gray-500">
@@ -182,8 +182,8 @@ const Footer = () => {
         </div>
 
         {/* Disclaimer */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <p className="text-xs text-gray-500 text-center">
+        <div className="pt-6 mt-8 border-t border-gray-200">
+          <p className="text-xs text-center text-gray-500">
             This platform operates on the Avalanche blockchain. Please ensure you understand the risks associated with cryptocurrency transactions. 
             All donations are recorded on the blockchain for complete transparency.
           </p>

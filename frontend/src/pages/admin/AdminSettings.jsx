@@ -29,7 +29,7 @@ const AdminSettings = () => {
         </div>
 
         {/* Settings Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card className="p-6 text-center">
             <Shield className="w-12 h-12 mx-auto mb-4 text-blue-500" />
             <h3 className="mb-2 text-lg font-semibold text-gray-900">
@@ -110,21 +110,21 @@ const AdminSettings = () => {
         </div>
 
         {/* Configuration Preview */}
-        <Card className="mt-8 p-6">
+        <Card className="p-6 mt-8">
           <h3 className="mb-4 text-lg font-semibold text-gray-900">
             Current Configuration
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
-              <h4 className="font-medium text-gray-900 mb-2">Platform Status</h4>
+              <h4 className="mb-2 font-medium text-gray-900">Platform Status</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-600">System Status</span>
-                  <span className="text-green-600 font-medium">Operational</span>
+                  <span className="font-medium text-green-600">Operational</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Network</span>
-                  <span className="text-blue-600 font-medium">Avalanche Fuji</span>
+                  <span className="font-medium text-blue-600">Avalanche Fuji</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Active Users</span>
@@ -133,19 +133,19 @@ const AdminSettings = () => {
               </div>
             </div>
             <div>
-              <h4 className="font-medium text-gray-900 mb-2">Security Status</h4>
+              <h4 className="mb-2 font-medium text-gray-900">Security Status</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Authentication</span>
-                  <span className="text-green-600 font-medium">Active</span>
+                  <span className="font-medium text-green-600">Active</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Role-based Access</span>
-                  <span className="text-green-600 font-medium">Enabled</span>
+                  <span className="font-medium text-green-600">Enabled</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Audit Logging</span>
-                  <span className="text-green-600 font-medium">Enabled</span>
+                  <span className="font-medium text-green-600">Enabled</span>
                 </div>
               </div>
             </div>

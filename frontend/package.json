@@ -7,8 +7,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:analyze": "ANALYZE=true vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "analyze": "npx vite-bundle-analyzer",
+    "perf": "npm run build && npm run preview"
   },
   "dependencies": {
     "axios": "^1.6.2",
@@ -36,6 +39,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
     "postcss": "^8.4.32",
+    "rollup-plugin-visualizer": "^6.0.3",
     "tailwindcss": "^3.3.6",
     "vite": "^7.1.1",
     "vite-plugin-pwa": "^1.0.2",

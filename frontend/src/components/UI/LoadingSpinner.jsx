@@ -5,7 +5,9 @@ const LoadingSpinner = ({
   size = 'md', 
   color = 'avalanche', 
   className = '',
-  text = ''
+  text = '',
+  inline = false,
+  'aria-label': ariaLabel
 }) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
@@ -22,8 +24,18 @@ const LoadingSpinner = ({
     warning: 'border-warning-500'
   }
 
+  const Container = inline ? 'span' : 'div';
+  const containerClasses = inline 
+    ? 'inline-flex items-center gap-2' 
+    : 'flex flex-col items-center justify-center';
+
   return (
-    <div className={`flex flex-col items-center justify-center ${className}`}>
+    <Container 
+      className={`${containerClasses} ${className}`}
+      role="status"
+      aria-live="polite"
+      aria-label={ariaLabel || text || 'Loading content'}
+    >
       <motion.div
         className={`
           ${sizeClasses[size]} 
@@ -38,6 +50,7 @@ const LoadingSpinner = ({
           repeat: Infinity,
           ease: "linear"
         }}
+        aria-hidden="true"
       />
       {text && (
         <motion.p
@@ -46,12 +59,12 @@ const LoadingSpinner = ({
           transition={{ delay: 0.5 }}
           className={`mt-3 text-sm ${
             color === 'white' ? 'text-white' : 'text-gray-600'
-          }`}
+          } ${inline ? 'mt-0' : 'mt-3'}`}
         >
           {text}
         </motion.p>
       )}
-    </div>
+    </Container>
   )
 }
 

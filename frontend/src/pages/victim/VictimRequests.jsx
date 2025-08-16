@@ -28,12 +28,12 @@ const VictimRequests = () => {
         </div>
 
         {/* Request Form */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Submit New Request</h3>
-              <div className="text-center py-8">
-                <Heart className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+              <h3 className="mb-4 text-lg font-semibold text-gray-900">Submit New Request</h3>
+              <div className="py-8 text-center">
+                <Heart className="w-12 h-12 mx-auto mb-4 text-blue-500" />
                 <p className="text-gray-600">Request assistance interface coming soon...</p>
               </div>
             </Card>
@@ -41,7 +41,7 @@ const VictimRequests = () => {
 
           <div>
             <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+              <h3 className="mb-4 text-lg font-semibold text-gray-900">Quick Actions</h3>
               <div className="space-y-3">
                 <Button className="w-full" variant="outline">
                   <FileText className="w-4 h-4 mr-2" />
@@ -63,9 +63,9 @@ const VictimRequests = () => {
 
         {/* Recent Requests */}
         <Card className="p-6 mt-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">My Requests</h3>
-          <div className="text-center py-8">
-            <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">My Requests</h3>
+          <div className="py-8 text-center">
+            <FileText className="w-12 h-12 mx-auto mb-4 text-gray-400" />
             <p className="text-gray-600">Request history will appear here...</p>
           </div>
         </Card>

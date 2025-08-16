@@ -57,7 +57,7 @@ const DonorHistory = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="px-4 py-8 mx-auto max-w-6xl sm:px-6 lg:px-8">
+      <div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -72,11 +72,11 @@ const DonorHistory = () => {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-3">
           <Card className="p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <DollarSign className="h-8 w-8 text-green-500" />
+                <DollarSign className="w-8 h-8 text-green-500" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Donated</p>
@@ -88,7 +88,7 @@ const DonorHistory = () => {
           <Card className="p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Calendar className="h-8 w-8 text-blue-500" />
+                <Calendar className="w-8 h-8 text-blue-500" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Donations</p>
@@ -100,7 +100,7 @@ const DonorHistory = () => {
           <Card className="p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <FileText className="h-8 w-8 text-purple-500" />
+                <FileText className="w-8 h-8 text-purple-500" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">This Year</p>
@@ -114,10 +114,10 @@ const DonorHistory = () => {
         <Card className="p-6 mb-6">
           <div className="flex flex-wrap items-center gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Filter by Year
               </label>
-              <select className="border border-gray-300 rounded-md px-3 py-2 text-sm">
+              <select className="px-3 py-2 text-sm border border-gray-300 rounded-md">
                 <option>2024</option>
                 <option>2023</option>
                 <option>All Years</option>
@@ -125,10 +125,10 @@ const DonorHistory = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Filter by Type
               </label>
-              <select className="border border-gray-300 rounded-md px-3 py-2 text-sm">
+              <select className="px-3 py-2 text-sm border border-gray-300 rounded-md">
                 <option>All Types</option>
                 <option>One-time</option>
                 <option>Monthly</option>
@@ -136,10 +136,10 @@ const DonorHistory = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Filter by Disaster
               </label>
-              <select className="border border-gray-300 rounded-md px-3 py-2 text-sm">
+              <select className="px-3 py-2 text-sm border border-gray-300 rounded-md">
                 <option>All Disasters</option>
                 <option>Hurricane Delta Relief</option>
                 <option>Wildfire Recovery</option>
@@ -167,25 +167,25 @@ const DonorHistory = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                     Donation ID
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                     Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                     Amount
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                     Disaster
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                     Type
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                     Receipt
                   </th>
                 </tr>
@@ -193,27 +193,27 @@ const DonorHistory = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {donations.map((donation) => (
                   <tr key={donation.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                       {donation.id}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                       {new Date(donation.date).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                    <td className="px-6 py-4 text-sm font-semibold text-gray-900 whitespace-nowrap">
                       ${donation.amount}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                       {donation.disaster}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                       {donation.type}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">
+                      <span className="inline-flex px-2 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded-full">
                         {donation.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                       <Button size="sm" variant="outline">
                         <Download className="w-4 h-4 mr-1" />
                         Download
@@ -228,13 +228,13 @@ const DonorHistory = () => {
 
         {/* Tax Information */}
         <Card className="p-6 mt-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Tax Information</h2>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">Tax Information</h2>
+          <div className="p-4 border border-blue-200 rounded-lg bg-blue-50">
             <div className="flex items-start">
               <FileText className="w-5 h-5 text-blue-500 mt-0.5 mr-3" />
               <div>
                 <h3 className="font-semibold text-blue-900">Annual Tax Summary</h3>
-                <p className="text-blue-700 text-sm mb-3">
+                <p className="mb-3 text-sm text-blue-700">
                   Your total charitable donations for 2024: <strong>${totalDonated}</strong>
                 </p>
                 <Button size="sm" variant="outline">

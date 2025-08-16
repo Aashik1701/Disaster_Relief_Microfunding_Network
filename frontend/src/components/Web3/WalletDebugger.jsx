@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Bug, CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react'
 import { useWeb3Store } from '../../store/web3Store'

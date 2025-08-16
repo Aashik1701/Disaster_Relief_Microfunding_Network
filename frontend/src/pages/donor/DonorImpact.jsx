@@ -39,7 +39,7 @@ const DonorImpact = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="px-4 py-8 mx-auto max-w-6xl sm:px-6 lg:px-8">
+      <div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -54,27 +54,27 @@ const DonorImpact = () => {
         </div>
 
         {/* Impact Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-4">
           <Card className="p-6 text-center">
-            <Users className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+            <Users className="w-12 h-12 mx-auto mb-4 text-blue-500" />
             <h3 className="text-2xl font-bold text-gray-900">{impactStats.totalPeopleHelped}</h3>
             <p className="text-gray-600">People Helped</p>
           </Card>
 
           <Card className="p-6 text-center">
-            <MapPin className="h-12 w-12 text-green-500 mx-auto mb-4" />
+            <MapPin className="w-12 h-12 mx-auto mb-4 text-green-500" />
             <h3 className="text-2xl font-bold text-gray-900">{impactStats.communitiesSupported}</h3>
             <p className="text-gray-600">Communities Supported</p>
           </Card>
 
           <Card className="p-6 text-center">
-            <BarChart3 className="h-12 w-12 text-purple-500 mx-auto mb-4" />
+            <BarChart3 className="w-12 h-12 mx-auto mb-4 text-purple-500" />
             <h3 className="text-2xl font-bold text-gray-900">{impactStats.disastersSupported}</h3>
             <p className="text-gray-600">Disasters Supported</p>
           </Card>
 
           <Card className="p-6 text-center">
-            <Award className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
+            <Award className="w-12 h-12 mx-auto mb-4 text-yellow-500" />
             <h3 className="text-2xl font-bold text-gray-900">{impactStats.impactScore}</h3>
             <p className="text-gray-600">Impact Level</p>
           </Card>
@@ -82,10 +82,10 @@ const DonorImpact = () => {
 
         {/* Impact Timeline */}
         <Card className="p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Impact Over Time</h2>
-          <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+          <h2 className="mb-6 text-xl font-semibold text-gray-900">Impact Over Time</h2>
+          <div className="flex items-center justify-center h-64 bg-gray-100 rounded-lg">
             <div className="text-center">
-              <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-2" />
+              <TrendingUp className="w-12 h-12 mx-auto mb-2 text-gray-400" />
               <p className="text-gray-600">Impact chart visualization</p>
               <p className="text-sm text-gray-500">Shows growth in people helped over time</p>
             </div>
@@ -94,10 +94,10 @@ const DonorImpact = () => {
 
         {/* Disaster-Specific Impact */}
         <Card className="p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Impact by Disaster</h2>
+          <h2 className="mb-6 text-xl font-semibold text-gray-900">Impact by Disaster</h2>
           <div className="space-y-6">
             {disasters.map((disaster, index) => (
-              <div key={index} className="border rounded-lg p-6">
+              <div key={index} className="p-6 border rounded-lg">
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">{disaster.name}</h3>
@@ -109,7 +109,7 @@ const DonorImpact = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2">
                   <div className="flex items-center space-x-3">
                     <Users className="w-5 h-5 text-blue-500" />
                     <div>
@@ -127,8 +127,8 @@ const DonorImpact = () => {
                   </div>
                 </div>
                 
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-semibold text-gray-900 mb-2">Outcome:</h4>
+                <div className="p-4 rounded-lg bg-gray-50">
+                  <h4 className="mb-2 font-semibold text-gray-900">Outcome:</h4>
                   <p className="text-gray-700">{disaster.outcome}</p>
                 </div>
               </div>
@@ -137,13 +137,13 @@ const DonorImpact = () => {
         </Card>
 
         {/* Recognition and Achievements */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 gap-6 mb-8 lg:grid-cols-2">
           <Card className="p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Your Achievements</h2>
+            <h2 className="mb-6 text-xl font-semibold text-gray-900">Your Achievements</h2>
             <div className="space-y-4">
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0">
-                  <Award className="h-8 w-8 text-yellow-500" />
+                  <Award className="w-8 h-8 text-yellow-500" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">Gold Impact Level</h3>
@@ -153,7 +153,7 @@ const DonorImpact = () => {
               
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0">
-                  <Heart className="h-8 w-8 text-red-500" />
+                  <Heart className="w-8 h-8 text-red-500" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">Community Champion</h3>
@@ -163,7 +163,7 @@ const DonorImpact = () => {
               
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0">
-                  <Users className="h-8 w-8 text-blue-500" />
+                  <Users className="w-8 h-8 text-blue-500" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">Consistent Supporter</h3>
@@ -174,9 +174,9 @@ const DonorImpact = () => {
           </Card>
 
           <Card className="p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Environmental Impact</h2>
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
+            <h2 className="mb-6 text-xl font-semibold text-gray-900">Environmental Impact</h2>
+            <div className="mb-6 text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 mb-4 bg-green-100 rounded-full">
                 <span className="text-2xl font-bold text-green-600">{impactStats.carbonFootprint}</span>
               </div>
               <p className="text-lg font-semibold text-gray-900">Tons CO₂ Offset</p>
@@ -201,16 +201,16 @@ const DonorImpact = () => {
         </div>
 
         {/* Call to Action */}
-        <Card className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+        <Card className="p-6 border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            <h2 className="mb-4 text-2xl font-bold text-gray-900">
               Continue Making a Difference
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="mb-6 text-gray-600">
               Your contributions have helped 127 people rebuild their lives. 
               Help us reach even more communities in need.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Link to="/donor/donate">
                 <Button className="w-full sm:w-auto">
                   Make Another Donation

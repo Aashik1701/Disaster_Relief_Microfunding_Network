@@ -176,7 +176,7 @@ const RoleBasedNavigation = ({ isMobile = false }) => {
             {item.name}
           </span>
           {isActive && !isMobile && (
-            <div className="ml-auto w-2 h-2 bg-avalanche-500 rounded-full hidden lg:block" />
+            <div className="hidden w-2 h-2 ml-auto rounded-full bg-avalanche-500 lg:block" />
           )}
         </Link>
       </RoleGuard>
@@ -188,7 +188,7 @@ const RoleBasedNavigation = ({ isMobile = false }) => {
       {/* User Role Badge */}
       {isAuthenticated && user && (
         <div className={`mb-6 ${isMobile ? 'px-4' : 'px-2'}`}>
-          <div className="bg-gradient-to-r from-avalanche-500 to-avalanche-600 rounded-lg p-3 text-white">
+          <div className="p-3 text-white rounded-lg bg-gradient-to-r from-avalanche-500 to-avalanche-600">
             <div className={`flex items-center ${isMobile ? 'justify-start' : 'justify-center lg:justify-start'}`}>
               <Shield className={`${isMobile ? 'w-5 h-5 mr-2' : 'w-5 h-5 lg:mr-2'}`} />
               <div className={`${isMobile ? 'block' : 'hidden lg:block'}`}>

@@ -38,18 +38,18 @@ const GuestWelcome = ({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="px-4 py-16 mx-auto max-w-4xl sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">{title}</h1>
-          <p className="text-xl text-gray-600 mb-8">{subtitle}</p>
+      <div className="max-w-4xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-bold text-gray-900">{title}</h1>
+          <p className="mb-8 text-xl text-gray-600">{subtitle}</p>
           
           {roleSpecific && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+            <div className="p-4 mb-8 border border-blue-200 rounded-lg bg-blue-50">
               <p className="text-blue-700">{roleSpecific}</p>
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Link to="/login">
               <Button size="lg" className="w-full sm:w-auto">
                 Sign In
@@ -63,7 +63,7 @@ const GuestWelcome = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 gap-6 mb-12 md:grid-cols-2">
           {features.map((feature, index) => {
             const IconComponent = feature.icon
             return (
@@ -77,15 +77,15 @@ const GuestWelcome = ({
                     <IconComponent className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    <h3 className="mb-2 text-lg font-semibold text-gray-900">
                       {feature.title}
                       {feature.available && (
-                        <span className="ml-2 px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full">
+                        <span className="px-2 py-1 ml-2 text-xs text-green-700 bg-green-100 rounded-full">
                           Available
                         </span>
                       )}
                       {!feature.available && (
-                        <span className="ml-2 px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">
+                        <span className="px-2 py-1 ml-2 text-xs text-gray-600 bg-gray-100 rounded-full">
                           Sign in required
                         </span>
                       )}
@@ -100,13 +100,13 @@ const GuestWelcome = ({
 
         <Card className="p-8 bg-gradient-to-r from-avalanche-50 to-blue-50 border-avalanche-200">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            <h2 className="mb-4 text-2xl font-bold text-gray-900">
               Ready to Make a Difference?
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="mb-6 text-gray-600">
               Join thousands of donors, vendors, and volunteers helping disaster victims worldwide.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Link to="/donor/donate">
                 <Button className="w-full sm:w-auto">
                   <Heart className="w-4 h-4 mr-2" />

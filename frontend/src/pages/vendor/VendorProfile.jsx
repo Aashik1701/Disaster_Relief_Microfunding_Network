@@ -7,7 +7,7 @@ import Button from '../../components/UI/Button'
 const VendorProfile = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl px-4 py-8 mx-auto sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -24,13 +24,13 @@ const VendorProfile = () => {
         {/* Profile Form */}
         <div className="space-y-8">
           <Card className="p-6">
-            <h3 className="flex items-center text-lg font-semibold text-gray-900 mb-4">
+            <h3 className="flex items-center mb-4 text-lg font-semibold text-gray-900">
               <Store className="w-5 h-5 mr-2 text-blue-500" />
               Business Information
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Business Name</label>
+                <label className="block mb-1 text-sm font-medium text-gray-700">Business Name</label>
                 <input
                   type="text"
                   defaultValue="Relief Supply Co."
@@ -38,7 +38,7 @@ const VendorProfile = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Business Type</label>
+                <label className="block mb-1 text-sm font-medium text-gray-700">Business Type</label>
                 <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
                   <option>Food Supplier</option>
                   <option>Medical Supplier</option>
@@ -50,13 +50,13 @@ const VendorProfile = () => {
           </Card>
 
           <Card className="p-6">
-            <h3 className="flex items-center text-lg font-semibold text-gray-900 mb-4">
+            <h3 className="flex items-center mb-4 text-lg font-semibold text-gray-900">
               <MapPin className="w-5 h-5 mr-2 text-green-500" />
               Location & Contact
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                <label className="block mb-1 text-sm font-medium text-gray-700">Address</label>
                 <textarea
                   rows={3}
                   defaultValue="123 Supply Street, Austin, TX 78701"
@@ -65,7 +65,7 @@ const VendorProfile = () => {
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">Phone</label>
                   <input
                     type="tel"
                     defaultValue="+1 (555) 123-4567"
@@ -73,7 +73,7 @@ const VendorProfile = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">Email</label>
                   <input
                     type="email"
                     defaultValue="contact@reliefsupply.co"
@@ -85,20 +85,20 @@ const VendorProfile = () => {
           </Card>
 
           <Card className="p-6">
-            <h3 className="flex items-center text-lg font-semibold text-gray-900 mb-4">
+            <h3 className="flex items-center mb-4 text-lg font-semibold text-gray-900">
               <Star className="w-5 h-5 mr-2 text-yellow-500" />
               Performance Metrics
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              <div className="p-4 text-center rounded-lg bg-gray-50">
                 <p className="text-2xl font-bold text-gray-900">4.8</p>
                 <p className="text-sm text-gray-600">Customer Rating</p>
               </div>
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <div className="p-4 text-center rounded-lg bg-gray-50">
                 <p className="text-2xl font-bold text-gray-900">342</p>
                 <p className="text-sm text-gray-600">Total Transactions</p>
               </div>
-              <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <div className="p-4 text-center rounded-lg bg-gray-50">
                 <p className="text-2xl font-bold text-gray-900">95%</p>
                 <p className="text-sm text-gray-600">Reliability Score</p>
               </div>

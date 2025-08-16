@@ -108,35 +108,35 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-avalanche-500 to-avalanche-600">
         <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="relative px-4 py-24 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            <h1 className="mb-6 text-4xl font-bold text-white md:text-6xl">
               Blockchain-Powered
               <span className="block text-avalanche-100">
                 Disaster Relief
               </span>
             </h1>
-            <p className="text-xl text-avalanche-100 mb-8 max-w-3xl mx-auto">
+            <p className="max-w-3xl mx-auto mb-8 text-xl text-avalanche-100">
               Transparent, efficient, and accountable disaster relief funding through 
               Avalanche blockchain technology. Every donation tracked, every impact verified.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Link 
                   to="/donate"
-                  className="inline-flex items-center px-8 py-4 bg-white text-avalanche-600 font-semibold rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-lg"
+                  className="inline-flex items-center px-8 py-4 font-semibold transition-all duration-200 bg-white rounded-lg shadow-lg text-avalanche-600 hover:bg-gray-50"
                 >
                   Start Donating
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
               </motion.div>
               
@@ -146,7 +146,7 @@ const HomePage = () => {
               >
                 <Link 
                   to="/transparency"
-                  className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-avalanche-600 transition-all duration-200"
+                  className="inline-flex items-center px-8 py-4 font-semibold text-white transition-all duration-200 border-2 border-white rounded-lg hover:bg-white hover:text-avalanche-600"
                 >
                   View Transparency
                 </Link>
@@ -158,8 +158,8 @@ const HomePage = () => {
 
       {/* Stats Section */}
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
             {stats.map((stat, index) => {
               const Icon = stat.icon
               return (
@@ -171,14 +171,14 @@ const HomePage = () => {
                   className="text-center"
                 >
                   <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-avalanche-50 rounded-full">
-                      <Icon className="h-8 w-8 text-avalanche-500" />
+                    <div className="p-3 rounded-full bg-avalanche-50">
+                      <Icon className="w-8 h-8 text-avalanche-500" />
                     </div>
                   </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">
+                  <div className="mb-2 text-3xl font-bold text-gray-900">
                     {stat.value}
                   </div>
-                  <div className="text-gray-600 mb-1">
+                  <div className="mb-1 text-gray-600">
                     {stat.label}
                   </div>
                   <div className="text-sm text-success-600">
@@ -193,22 +193,22 @@ const HomePage = () => {
 
       {/* Features Section */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="mb-16 text-center"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
               Why Choose Our Platform?
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="max-w-3xl mx-auto text-xl text-gray-600">
               Built on Avalanche blockchain for maximum transparency, efficiency, and impact.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {features.map((feature, index) => {
               const Icon = feature.icon
               return (
@@ -217,17 +217,17 @@ const HomePage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+                  className="p-6 transition-all duration-200 bg-white shadow-sm rounded-xl hover:shadow-md"
                 >
                   <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-gray-50 rounded-full">
+                    <div className="p-3 rounded-full bg-gray-50">
                       <Icon className={`h-8 w-8 ${feature.color}`} />
                     </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">
+                  <h3 className="mb-2 text-lg font-semibold text-center text-gray-900">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 text-center">
+                  <p className="text-center text-gray-600">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -239,15 +239,15 @@ const HomePage = () => {
 
       {/* Recent Disasters Section */}
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex justify-between items-center mb-12"
+            className="flex items-center justify-between mb-12"
           >
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
                 Active Disaster Relief
               </h2>
               <p className="text-xl text-gray-600">
@@ -256,36 +256,36 @@ const HomePage = () => {
             </div>
             <Link 
               to="/transparency"
-              className="hidden sm:flex items-center text-avalanche-600 hover:text-avalanche-700 font-medium"
+              className="items-center hidden font-medium sm:flex text-avalanche-600 hover:text-avalanche-700"
             >
               View All
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {recentDisasters.map((disaster, index) => (
               <motion.div
                 key={disaster.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden border border-gray-200"
+                className="overflow-hidden transition-all duration-200 bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md"
               >
-                <div className="h-48 bg-gray-200 relative">
+                <div className="relative h-48 bg-gray-200">
                   <img 
                     src={disaster.image}
                     alt={disaster.name}
-                    className="w-full h-full object-cover"
+                    className="object-cover w-full h-full"
                     onError={(e) => {
                       e.target.style.display = 'none'
                       e.target.nextElementSibling.style.display = 'flex'
                     }}
                   />
                   <div 
-                    className="w-full h-full bg-gradient-to-br from-avalanche-400 to-avalanche-600 hidden items-center justify-center"
+                    className="items-center justify-center hidden w-full h-full bg-gradient-to-br from-avalanche-400 to-avalanche-600"
                   >
-                    <MapPin className="h-12 w-12 text-white" />
+                    <MapPin className="w-12 h-12 text-white" />
                   </div>
                   
                   <div className="absolute top-4 right-4">
@@ -302,11 +302,11 @@ const HomePage = () => {
                 </div>
 
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">
                     {disaster.name}
                   </h3>
-                  <p className="text-gray-600 mb-4 flex items-center">
-                    <MapPin className="h-4 w-4 mr-1" />
+                  <p className="flex items-center mb-4 text-gray-600">
+                    <MapPin className="w-4 h-4 mr-1" />
                     {disaster.location}
                   </p>
 
@@ -331,10 +331,10 @@ const HomePage = () => {
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="pt-4 mt-4 border-t border-gray-200">
                     <Link
                       to={`/disaster/${disaster.id}`}
-                      className="w-full btn-primary text-center"
+                      className="w-full text-center btn-primary"
                     >
                       View Details
                     </Link>
@@ -344,13 +344,13 @@ const HomePage = () => {
             ))}
           </div>
 
-          <div className="text-center mt-8 sm:hidden">
+          <div className="mt-8 text-center sm:hidden">
             <Link 
               to="/transparency"
-              className="inline-flex items-center text-avalanche-600 hover:text-avalanche-700 font-medium"
+              className="inline-flex items-center font-medium text-avalanche-600 hover:text-avalanche-700"
             >
               View All Disasters
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </div>
         </div>
@@ -358,22 +358,22 @@ const HomePage = () => {
 
       {/* How It Works Section */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="mb-16 text-center"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
               How It Works
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="max-w-3xl mx-auto text-xl text-gray-600">
               Simple, transparent, and efficient disaster relief in four easy steps.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 step: '01',
@@ -403,10 +403,10 @@ const HomePage = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="text-4xl font-bold text-avalanche-500 mb-4">
+                <div className="mb-4 text-4xl font-bold text-avalanche-500">
                   {item.step}
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="mb-2 text-lg font-semibold text-gray-900">
                   {item.title}
                 </h3>
                 <p className="text-gray-600">
@@ -420,31 +420,31 @@ const HomePage = () => {
 
       {/* CTA Section */}
       <section className="py-16 bg-avalanche-500">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-4xl px-4 mx-auto text-center sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
               Ready to Make a Difference?
             </h2>
-            <p className="text-xl text-avalanche-100 mb-8">
+            <p className="mb-8 text-xl text-avalanche-100">
               Join thousands of donors who are creating transparent, 
               accountable disaster relief through blockchain technology.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Link 
                   to="/donate"
-                  className="inline-flex items-center px-8 py-4 bg-white text-avalanche-600 font-semibold rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-lg"
+                  className="inline-flex items-center px-8 py-4 font-semibold transition-all duration-200 bg-white rounded-lg shadow-lg text-avalanche-600 hover:bg-gray-50"
                 >
                   Start Donating Now
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
               </motion.div>
               
@@ -454,7 +454,7 @@ const HomePage = () => {
               >
                 <Link 
                   to="/how-it-works"
-                  className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-avalanche-600 transition-all duration-200"
+                  className="inline-flex items-center px-8 py-4 font-semibold text-white transition-all duration-200 border-2 border-white rounded-lg hover:bg-white hover:text-avalanche-600"
                 >
                   Learn More
                 </Link>

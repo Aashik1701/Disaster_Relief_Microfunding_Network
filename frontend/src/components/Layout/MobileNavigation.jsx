@@ -96,7 +96,7 @@ const MobileNavigation = () => {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 safe-bottom">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 safe-bottom">
       <div className="flex h-16 overflow-x-auto">
         {navigationItems.map((item) => {
           const Icon = item.icon

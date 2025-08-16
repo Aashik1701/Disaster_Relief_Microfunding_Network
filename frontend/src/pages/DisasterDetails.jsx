@@ -7,20 +7,20 @@ const DisasterDetails = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="text-center">
-          <MapPin className="h-16 w-16 text-avalanche-500 mx-auto mb-4" />
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          <MapPin className="w-16 h-16 mx-auto mb-4 text-avalanche-500" />
+          <h1 className="mb-4 text-3xl font-bold text-gray-900">
             Disaster Details
           </h1>
-          <p className="text-gray-600 mb-8">
+          <p className="mb-8 text-gray-600">
             Detailed information for disaster relief operation #{id}
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="card text-center">
-              <Calendar className="h-12 w-12 text-blue-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <div className="grid max-w-4xl grid-cols-1 gap-6 mx-auto md:grid-cols-2 lg:grid-cols-3">
+            <div className="text-center card">
+              <Calendar className="w-12 h-12 mx-auto mb-4 text-blue-500" />
+              <h3 className="mb-2 text-lg font-semibold text-gray-900">
                 Timeline
               </h3>
               <p className="text-gray-600">
@@ -28,9 +28,9 @@ const DisasterDetails = () => {
               </p>
             </div>
             
-            <div className="card text-center">
-              <TrendingUp className="h-12 w-12 text-green-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <div className="text-center card">
+              <TrendingUp className="w-12 h-12 mx-auto mb-4 text-green-500" />
+              <h3 className="mb-2 text-lg font-semibold text-gray-900">
                 Progress
               </h3>
               <p className="text-gray-600">
@@ -38,9 +38,9 @@ const DisasterDetails = () => {
               </p>
             </div>
             
-            <div className="card text-center">
-              <MapPin className="h-12 w-12 text-purple-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <div className="text-center card">
+              <MapPin className="w-12 h-12 mx-auto mb-4 text-purple-500" />
+              <h3 className="mb-2 text-lg font-semibold text-gray-900">
                 Impact Map
               </h3>
               <p className="text-gray-600">

@@ -66,9 +66,9 @@ const Sidebar = ({ onClose }) => {
               <Link
                 to={item.href}
                 onClick={onClose}
-                className="group flex items-center p-2 rounded-lg transition-all duration-200 text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                className="flex items-center p-2 text-gray-700 transition-all duration-200 rounded-lg group hover:bg-gray-50 hover:text-gray-900"
               >
-                <Icon className="h-5 w-5 mr-3 flex-shrink-0 text-gray-400 group-hover:text-gray-500" />
+                <Icon className="flex-shrink-0 w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-500" />
                 <span className="text-sm font-medium">
                   {item.name}
                 </span>
