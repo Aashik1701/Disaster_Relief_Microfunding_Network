@@ -7,16 +7,19 @@ const CSP_POLICIES = {
     'script-src': [
       "'self'",
       "'unsafe-eval'", // Required for Vite HMR in development
-      "'unsafe-inline'", // Required for some dev tools
+      "'unsafe-inline'", // Required for some dev tools and Web3 wallets
       "https://fonts.googleapis.com",
       "https://www.googletagmanager.com",
-      "chrome-extension:", // Web3 wallet extensions
-      "moz-extension:" // Firefox extensions
+      "chrome-extension:", // MetaMask and other Web3 wallet extensions
+      "moz-extension:", // Firefox extensions
+      "ws:", // WebSocket connections
+      "wss:" // Secure WebSocket connections
     ],
     'style-src': [
       "'self'",
-      "'unsafe-inline'", // Required for CSS-in-JS libraries
+      "'unsafe-inline'", // Required for CSS-in-JS libraries and Web3 wallets
       "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com", // Google Fonts CSS files
       "chrome-extension:",
       "moz-extension:"
     ],
@@ -42,11 +45,15 @@ const CSP_POLICIES = {
       "'self'",
       "https://api.pinata.cloud", // IPFS storage
       "https://gateway.pinata.cloud", // IPFS gateway
-      "https://api.avax-test.network", // Avalanche RPC
+      "https://api.avax-test.network", // Avalanche Fuji testnet
+      "https://api.avax.network", // Avalanche mainnet
       "https://testnet.snowtrace.io", // Block explorer
+      "https://snowtrace.io", // Mainnet block explorer
       "wss://api.avax-test.network", // WebSocket connections
-      "ws://localhost:*", // Local development
-      "http://localhost:*", // Local development
+      "wss://api.avax.network", // Mainnet WebSocket
+      "ws://localhost:*", // Local development WebSocket
+      "http://localhost:*", // Local development HTTP
+      "https://localhost:*", // Local development HTTPS
       "chrome-extension:", // Web3 wallets
       "moz-extension:" // Firefox extensions
     ],
@@ -69,15 +76,82 @@ const CSP_POLICIES = {
     'default-src': ["'self'"],
     'script-src': [
       "'self'",
-      // Remove 'unsafe-eval' in production
-      "'unsafe-inline'", // Consider using nonces instead
+      // Remove 'unsafe-eval' in production for security
+      "'unsafe-inline'", // Still needed for Web3 wallets - consider using nonces
       "https://fonts.googleapis.com",
-      "https://www.googletagmanager.com"
+      "https://www.googletagmanager.com",
+      "chrome-extension:", // Web3 wallets still needed in production
+      "moz-extension:"
     ],
     'style-src': [
       "'self'",
-      "'unsafe-inline'", // Consider using nonces instead
-      "https://fonts.googleapis.com"
+      "'unsafe-inline'", // Consider using nonces in strict production
+      "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com", // Google Fonts CSS files
+      "chrome-extension:",
+      "moz-extension:"
+    ],
+    'font-src': [
+      "'self'",
+      "https://fonts.gstatic.com",
+      "chrome-extension:",
+      "moz-extension:"
+    ],
+    'img-src': [
+      "'self'",
+      "data:",
+      "https:",
+      "blob:",
+      "chrome-extension:",
+      "moz-extension:"
+    ],
+    'media-src': [
+      "'self'",
+      "blob:"
+    ],
+    'connect-src': [
+      "'self'",
+      "https://api.pinata.cloud",
+      "https://gateway.pinata.cloud",
+      "https://api.avax-test.network",
+      "https://api.avax.network",
+      "https://testnet.snowtrace.io",
+      "https://snowtrace.io",
+      "wss://api.avax-test.network",
+      "wss://api.avax.network",
+      "chrome-extension:",
+      "moz-extension:"
+    ],
+    'worker-src': [
+      "'self'",
+      "blob:"
+    ],
+    'object-src': ["'none'"],
+    'base-uri': ["'self'"],
+    'form-action': ["'self'"],
+    'frame-ancestors': ["'none'"],
+    'frame-src': [
+      "'self'",
+      "chrome-extension:",
+      "moz-extension:"
+    ]
+  },
+
+  // Strict production policy for maximum security (requires nonces)
+  strict: {
+    'default-src': ["'self'"],
+    'script-src': [
+      "'self'",
+      "'nonce-{NONCE}'", // Replace with actual nonce
+      "chrome-extension:",
+      "moz-extension:"
+    ],
+    'style-src': [
+      "'self'",
+      "'nonce-{NONCE}'", // Replace with actual nonce
+      "https://fonts.googleapis.com",
+      "chrome-extension:",
+      "moz-extension:"
     ],
     'font-src': [
       "'self'",
@@ -89,26 +163,23 @@ const CSP_POLICIES = {
       "https:",
       "blob:"
     ],
-    'media-src': [
-      "'self'",
-      "blob:"
-    ],
     'connect-src': [
       "'self'",
       "https://api.pinata.cloud",
       "https://gateway.pinata.cloud",
-      "https://api.avax-test.network",
-      "https://testnet.snowtrace.io",
-      "wss://api.avax-test.network"
+      "https://api.avax.network",
+      "wss://api.avax.network",
+      "chrome-extension:",
+      "moz-extension:"
     ],
     'worker-src': [
-      "'self'",
-      "blob:"
+      "'self'"
     ],
     'object-src': ["'none'"],
     'base-uri': ["'self'"],
     'form-action': ["'self'"],
-    'frame-ancestors': ["'none'"]
+    'frame-ancestors': ["'none'"],
+    'upgrade-insecure-requests': []
   }
 }
 

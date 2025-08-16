@@ -8,7 +8,7 @@ import WalletDebugger from './components/Web3/WalletDebugger'
 import PerformanceDashboard from './components/Dev/PerformanceDashboard'
 import { AuthProvider } from './contexts/AuthContext'
 import { useWeb3Store } from './store/web3Store'
-import { ErrorBoundary } from './components/UI/ErrorBoundary'
+import ErrorBoundary from './components/UI/ErrorBoundary'
 import { 
   LazyRoutes, 
   preloadCriticalRoutes, 
@@ -66,8 +66,8 @@ const AppInitializing = () => (
       className="text-center"
     >
       <div className="mb-8">
-        <div className="w-24 h-24 mx-auto mb-4 bg-white rounded-full flex items-center justify-center">
-          <div className="w-16 h-16 bg-avalanche-500 rounded-full flex items-center justify-center">
+        <div className="flex items-center justify-center w-24 h-24 mx-auto mb-4 bg-white rounded-full">
+          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-avalanche-500">
             <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"/>
             </svg>
@@ -120,18 +120,18 @@ function App() {
   return (
     <ErrorBoundary
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center p-8">
-            <div className="text-red-500 mb-4">
+        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+          <div className="p-8 text-center">
+            <div className="mb-4 text-red-500">
               <svg className="w-16 h-16 mx-auto" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Application Error</h1>
-            <p className="text-gray-600 mb-6">Something went wrong. Please refresh the page.</p>
+            <h1 className="mb-4 text-2xl font-bold text-gray-900">Application Error</h1>
+            <p className="mb-6 text-gray-600">Something went wrong. Please refresh the page.</p>
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+              className="px-6 py-3 text-white transition-colors rounded-lg bg-primary-600 hover:bg-primary-700"
             >
               Refresh Page
             </button>
@@ -262,7 +262,7 @@ function App() {
                     className="py-16 text-center"
                   >
                     <div className="mb-8">
-                      <div className="text-6xl mb-4">🌊</div>
+                      <div className="mb-4 text-6xl">🌊</div>
                       <h1 className="mb-4 text-4xl font-bold text-gray-900">404</h1>
                       <p className="mb-8 text-gray-600">
                         The page you're looking for seems to have drifted away.
@@ -270,7 +270,7 @@ function App() {
                     </div>
                     <motion.a 
                       href="/" 
-                      className="btn-primary inline-flex items-center"
+                      className="inline-flex items-center btn-primary"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >

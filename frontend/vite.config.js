@@ -93,15 +93,15 @@ export default defineConfig({
   ].filter(Boolean),
   
   server: {
-    port: 3001,
+    port: 3002,
     host: true,
     headers: {
-      // Disable CSP in development to allow Vite HMR
-      'Content-Security-Policy': ''
+      // Enhanced CSP for development with Web3 and Google Fonts support
+      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com chrome-extension: moz-extension:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com chrome-extension: moz-extension:; font-src 'self' https://fonts.gstatic.com chrome-extension: moz-extension:; img-src 'self' data: https: blob: chrome-extension: moz-extension:; media-src 'self' blob:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://api.pinata.cloud https://gateway.pinata.cloud https://api.avax-test.network https://api.avax.network https://testnet.snowtrace.io wss://api.avax-test.network ws://localhost:* http://localhost:* chrome-extension: moz-extension:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'self' chrome-extension: moz-extension:;"
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:5001',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '/api')

@@ -5,8 +5,17 @@ import { Toaster } from 'react-hot-toast'
 import App from './App.jsx'
 import './index.css'
 
-// Register service worker for PWA
-if ('serviceWorker' in navigator) {
+// Import CSP debugger for development
+if (process.env.NODE_ENV === 'development') {
+  import('./utils/cspDebugger.js')
+    .then(() => {
+      console.log('🛡️ CSP Debugger loaded - check console for violations')
+    })
+    .catch(console.error)
+}
+
+// Register service worker for PWA (disabled for now due to MIME type issues)
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
@@ -20,7 +29,12 @@ if ('serviceWorker' in navigator) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }}
+    >
       <App />
       <Toaster
         position="top-right"

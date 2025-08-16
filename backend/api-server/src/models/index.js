@@ -12,6 +12,11 @@ const ProofOfAid = require('./ProofOfAid');
 const AnalyticsCache = require('./AnalyticsCache');
 const AuditLog = require('./AuditLog');
 const SystemSettings = require('./SystemSettings');
+const Notification = require('./Notification');
+const ApiKey = require('./ApiKey');
+const JobQueue = require('./JobQueue');
+const Session = require('./Session');
+const Cache = require('./Cache');
 
 // Define associations
 // User associations
@@ -20,6 +25,15 @@ Disaster.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
 
 User.hasMany(AuditLog, { foreignKey: 'userId', as: 'auditLogs' });
 AuditLog.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+User.hasMany(Notification, { foreignKey: 'user_id', as: 'notifications' });
+Notification.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+
+User.hasMany(ApiKey, { foreignKey: 'user_id', as: 'apiKeys' });
+ApiKey.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+
+User.hasMany(Session, { foreignKey: 'user_id', as: 'sessions' });
+Session.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
 // Disaster associations
 Disaster.hasMany(Vendor, { foreignKey: 'disasterZoneId', as: 'vendors' });
@@ -60,5 +74,10 @@ module.exports = {
   ProofOfAid,
   AnalyticsCache,
   AuditLog,
-  SystemSettings
+  SystemSettings,
+  Notification,
+  ApiKey,
+  JobQueue,
+  Session,
+  Cache
 };

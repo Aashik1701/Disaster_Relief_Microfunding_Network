@@ -3,22 +3,34 @@
 /**
  * Database CLI Tool for Disaster Relief Network
  * 
- * Usage:
- *   node db-cli.js [command] [options]
+ * Comprehensive command-line interface for database operations
  * 
- * Commands:
- *   init       - Initialize database (run migrations and seeders)
- *   migrate    - Run pending migrations
- *   rollback   - Rollback last migration
- *   seed       - Run all seeders
- *   reset      - Reset database (DROP ALL TABLES and recreate)
- *   status     - Show database status
- *   health     - Database health check
+ * Usage:
+ *   npm run db:cli <command> [options]
+ *   node src/database/db-cli.js <command> [options]
  */
 
-const path = require('path');
-const { sequelize } = require('./connection');
+require('dotenv').config();
+const { program } = require('commander');
 const DatabaseManager = require('./manager');
+const { sequelize } = require('./connection');
+const initializeDatabase = require('./init');
+const {
+  User,
+  Disaster,
+  Vendor,
+  Voucher,
+  Transaction,
+  ProofOfAid,
+  AnalyticsCache,
+  AuditLog,
+  SystemSettings,
+  Notification,
+  ApiKey,
+  JobQueue,
+  Session,
+  Cache
+} = require('../models');
 
 class DatabaseCLI {
   constructor() {

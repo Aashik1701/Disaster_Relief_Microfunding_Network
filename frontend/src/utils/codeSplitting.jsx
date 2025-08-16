@@ -1,12 +1,21 @@
+
 /**
  * Code Splitting Utilities
  * Provides lazy loading and route-based code splitting components
  */
 
 import { Suspense, lazy, forwardRef, useState, useRef, useEffect } from 'react';
-import { LoadingSpinner } from '@/components/UI/LoadingSpinner';
-import { ErrorBoundary } from '@/components/UI/ErrorBoundary';
+import LoadingSpinner from '@/components/UI/LoadingSpinner';
+import ErrorBoundary from '@/components/UI/ErrorBoundary';
 import { performanceMonitor } from '@/utils/performance.jsx';
+
+// Simple fallback loading component if LoadingSpinner fails
+const SimpleFallback = ({ message = "Loading..." }) => (
+  <div className="flex items-center justify-center p-4">
+    <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+    <span className="ml-2 text-gray-600">{message}</span>
+  </div>
+);
 
 /**
  * Higher-order component for lazy loading with enhanced error handling
@@ -16,7 +25,7 @@ export const withLazyLoading = (
   options = {}
 ) => {
   const {
-    fallback = <LoadingSpinner size="lg" message="Loading component..." />,
+    fallback = <SimpleFallback message="Loading component..." />,
     onError = null,
     retryCount = 3,
     retryDelay = 1000,
@@ -91,7 +100,7 @@ export const createLazyRoute = (importFn, options = {}) => {
   const Component = withLazyLoading(importFn, {
     fallback: (
       <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner size="xl" message="Loading page..." />
+        <SimpleFallback message="Loading page..." />
       </div>
     ),
     ...options
@@ -141,7 +150,7 @@ export const preloadRoute = (importFn, priority = 'low') => {
  */
 export const LazySection = ({ 
   children, 
-  fallback = <LoadingSpinner />,
+  fallback = <SimpleFallback />,
   threshold = 0.1,
   rootMargin = '50px',
   triggerOnce = true 
@@ -245,7 +254,7 @@ export const ProgressiveFeature = ({
   }
 
   if (loading) {
-    return fallback || <LoadingSpinner size="sm" />;
+    return fallback || <SimpleFallback />;
   }
 
   if (error) {
@@ -261,7 +270,7 @@ export const ProgressiveFeature = ({
 export const MicroFrontend = ({ 
   name,
   url,
-  fallback = <LoadingSpinner />,
+  fallback = <SimpleFallback />,
   onError = null 
 }) => {
   const [Component, setComponent] = useState(null);
@@ -302,7 +311,7 @@ export const MicroFrontend = ({
 export const ResourceLoader = ({ 
   resources,
   children,
-  fallback = <LoadingSpinner />
+  fallback = <SimpleFallback />
 }) => {
   const [loadedResources, setLoadedResources] = useState({});
   const [loading, setLoading] = useState(true);
